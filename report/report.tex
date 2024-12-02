@@ -1,0 +1,49 @@
+\documentclass[12pt]{article}
+
+% Article structure.
+
+% Variables.
+\input{./include/variables.tex}
+
+\title{\documenttitlepage}
+\date{\documentdate}
+
+% Includes.
+\input{./include/geometry.tex} % Geometry and graphics.
+\input{./include/localization.tex} % Localization.
+\input{./include/style.tex} % Style.
+
+\begin{document}
+
+    % Title.
+
+    \maketitle
+    \thispagestyle{empty}
+    
+    \begin{abstract}
+        
+    \end{abstract}
+
+    % Table of Contents.
+
+    \tableofcontents
+
+    % Contents.
+
+    \newpage
+    \section{Introduction}
+
+    % End.
+
+    \newpage
+    \thispagestyle{empty}
+
+    \vspace*{\fill}
+
+    \begin{center}
+        Last reviewed on \today.
+    \end{center}
+
+    \vspace*{\fill}
+
+\end{document}
