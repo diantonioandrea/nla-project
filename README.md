@@ -1,5 +1,7 @@
 # Numerical Linear Algebra - Project
 
-## Table of Contents
+_The Randomized k-Truncated Arnoldi Sketched GMRES_
 
-- [Table of Contents](#table-of-contents)
+<!-- ## Table of Contents
+
+- [Table of Contents](#table-of-contents) -->
