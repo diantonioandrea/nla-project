@@ -1,0 +1,29 @@
+\documentclass[12pt]{article}
+
+% Report structure (full version).
+
+% Variables.
+\input{./include/variables.tex}
+
+\title{\documenttitle \\ \textit{\documentsubtitle}}
+
+% Includes.
+\input{./include/geometry.tex} % Geometry and graphics.
+\input{./include/localization.tex} % Localization.
+\input{./include/style.tex} % Style.
+\input{./include/code.tex} % Code.
+\input{./include/math.tex} % Math.
+% \input{./include/bibliography.tex} % Bibliography.
+
+\begin{document}
+
+    %% Content (Abstract, TOC, Chapters and Bibliography).
+
+    \input{content/content.tex}
+
+    %% End.
+
+    \newpage
+    \input{extra/end.tex}
+
+\end{document}
