@@ -1,6 +1,6 @@
 # Numerical Linear Algebra - Project
 
-_The Randomized k-Truncated Arnoldi Sketched GMRES_
+_The Randomized k-Arnoldi Sketched GMRES_
 
 <!-- ## Table of Contents
 
