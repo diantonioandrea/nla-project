@@ -1,0 +1,39 @@
+\subsection{Subspace Embeddings}
+
+\begin{definition}[Subspace embedding]
+    Consider $s, d, n \in \NaturalNumbers$ and $\Matrix{B} \in \RealMatrices{n}{d}$ such that \\ $\Range{\Matrix{B}} = L \subseteq \RealVectors{n}$. A matrix $\Matrix{B} \in \RealMatrices{s}{n}$ is called a subspace embedding for $L$ with distortion $\varepsilon \in \left(0, 1\right)$ if:
+    \begin{align}
+        \left( 1 - \varepsilon \right) \Norm{\Matrix{B} \Vector{y}}_2 \leq \Norm{\Matrix{S} \Matrix{B} \Vector{y}}_2 &\leq \left( 1 + \varepsilon \right) \Norm{\Matrix{B} \Vector{y}}_2 &\text{for all } \Vector{y} \in \RealVectors{d}.
+    \end{align}
+\end{definition}
+
+\subsection{Sketching for Least-Squares Problems}
+
+% [!]
+
+\subsection{\textit{GMRES} and Derivation of the \textit{sGMRES}}
+
+Let $n \in \NaturalNumbers$,  $\Matrix{A} \in \RealMatrices{n}{n}$ and $\Vector{b} \in \RealVectors{n}$, the goal is to find $\Vector{x} \in \RealVectors{n}$ such that:
+\begin{align}
+    \Matrix{A} \Vector{x} = \Vector{b}. \label{eq:system}
+\end{align}
+
+Consider $d \in \NaturalNumbers$ such that $d \ll n$ and fix $\Matrix{B} \in \RealMatrices{n}{d}$, called \textit{basis}, with the property that $\Range{\Matrix{B}}$ contains a good approximate solution of \cref{eq:system}, that is:
+\begin{align}
+    \Matrix{A} \Matrix{B} \Vector{y} &\approx \Vector{b} &\text{for some } \Vector{y} \in \RealVectors{d}. \label{eq:app_system}
+\end{align}
+
+For the \textit{GMRES} method, fix an initial guess $\Vector{x}_0 \in \RealVectors{n}$, which leads to an initial residual $\Vector{r}_0 = \Vector{b} - \Matrix{A} \Vector{x}_0$, and consider the affine family of solutions of the form:
+\begin{align}
+    \Vector{x} = \Vector{x}_0 + \Matrix{B} \Vector{y},
+\end{align}
+which leads to a residual $\Vector{r} = \Vector{b} - \Matrix{A} \Vector{x} = \Vector{r}_0 - \Matrix{A} \Matrix{B} \Vector{y}$. The goal is to find $\Vector{y} \in \RealVectors{d}$ such that:
+\begin{align}
+    \Vector{y} = \min_{\Vector{z} \in \RealVectors{d}} \Norm{\Vector{r}_0 - \Matrix{A} \Matrix{B} \Vector{z}}_2. \label{eq:min_problem}
+\end{align}
+Note that \cref{eq:min_problem} can be solved by the means of a QR factorization of the reduced matrix $\Matrix{A} \Matrix{B}$.
+
+To derive the \textit{sGMRES}, what is done is to just sketch \cref{eq:min_problem}, that is to fix $s \in \NaturalNumbers$ and construct a subspace embedding $\Matrix{S} \in \RealMatrices{s}{n}$ for $\Range{\Matrix{A} \Matrix{B}, \Vector{r}_0}$, so that the sketched problem becomes:
+\begin{align}
+    \Vector{y} = \min_{\Vector{z} \in \RealVectors{d}} \Norm{ \Matrix{S} \left( \Vector{r}_0 - \Matrix{A} \Matrix{B} \Vector{z} \right)}_2. \label{eq:sketched_min_problem}
+\end{align}
