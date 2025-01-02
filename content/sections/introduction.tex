@@ -31,7 +31,7 @@ Let $n \in \NaturalNumbers$,  $\Matrix{A} \in \RealMatrices{n}{n}$ and $\Vector{
     \Matrix{A} \Vector{x} = \Vector{b}. \label{eq:system}
 \end{align}
 
-Consider $d \in \NaturalNumbers$ such that $d \ll n$ and fix $\Matrix{B} \in \RealMatrices{n}{d}$, called \textit{basis}, with the property that $\Range{\Matrix{B}}$ contains a good approximate solution of \cref{eq:system}, that is:
+Consider $d \in \NaturalNumbers$ such that $d \ll n$ and fix $\Matrix{B} \in \RealMatrices{n}{d}$, called \textit{basis}\footnote{Refer to \cref{sseq:basis} for a possible construction.}, with the property that $\Range{\Matrix{B}}$ contains a good approximate solution of \cref{eq:system}, that is:
 \begin{align}
     \Matrix{A} \Matrix{B} \Vector{y} &\approx \Vector{b} &\text{for some } \Vector{y} \in \RealVectors{d}. \label{eq:app_system}
 \end{align}
