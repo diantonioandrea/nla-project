@@ -11,18 +11,20 @@ Due to the fact that the subspace $L$ in \cref{def:embedding} is usually unknown
 
 \subsection{Sketching for Least-Squares Problems}
 
-\begin{proposition}[Sketching for least-squares problems]
+Subspace embeddings, as defined in \cref{def:embedding}, can be used to reduces the dimension of a least-squares problem.
+
+\begin{Fact}[Sketching for least-squares problems] \label{fact:least_squares}
     Let $s, d, n \in \NaturalNumbers$, $\Matrix{M} \in \RealMatrices{n}{d}$, $\Vector{v} \in \RealVectors{n}$ and consider $\Matrix{S} \in \RealMatrices{s}{n}$ subspace embedding for $\Range{\Matrix{M}, \Vector{v}}$. By \cref{def:embedding}:
     \begin{align}
-        \left( 1 - \varepsilon \right) \Norm{\Matrix{M} \Vector{y} - \Vector{v}}_2 \leq \Norm{\Matrix{S} \left( \Matrix{M} \Vector{y} - \Vector{v} \right)}_2 &\leq \left( 1 + \varepsilon \right) \Norm{\Matrix{M} \Vector{y} - \Vector{v}}_2 &\text{for all } \Vector{y} \in \RealVectors{d}.
+        \left( 1 - \varepsilon \right) \Norm{\Matrix{M} \Vector{y} - \Vector{v}}_2 \leq \Norm{\Matrix{S} \left( \Matrix{M} \Vector{y} - \Vector{v} \right)}_2 &\leq \left( 1 + \varepsilon \right) \Norm{\Matrix{M} \Vector{y} - \Vector{v}}_2 &\text{for all } \Vector{y} \in \RealVectors{d}. \label{eq:sketched_least_squares_1}
     \end{align}
-    In particular, let $\Vector{y}_{\star}, \Vector{y}^{\star} \in \RealVectors{d}$ be respectively the solutions to the least-square problem and the sketched least-squares problem, then:
+    In particular, denote by $\Vector{y}_{\star}, \Vector{y}^{\star} \in \RealVectors{d}$ respectively the solutions to the least-squares problem and the sketched least-squares problem, then:
     \begin{align}
-        \Norm{\Matrix{M} \Vector{y}_{\star} - \Vector{v}}_2 \leq \Norm{\Matrix{M} \Vector{y}^{\star} - \Vector{v}}_2 \leq \frac{1 + \varepsilon}{1 - \varepsilon} \Norm{\Matrix{M} \Vector{y}_{\star} - \Vector{v}}_2.
+        \Norm{\Matrix{M} \Vector{y}_{\star} - \Vector{v}}_2 \leq \Norm{\Matrix{M} \Vector{y}^{\star} - \Vector{v}}_2 \leq \frac{1 + \varepsilon}{1 - \varepsilon} \Norm{\Matrix{M} \Vector{y}_{\star} - \Vector{v}}_2. \label{eq:sketched_least_squares_2}
     \end{align}
-\end{proposition}
+\end{Fact}
 
-\subsection{\textit{GMRES} and Derivation of the \textit{sGMRES}}
+\subsection{\textit{GMRES}, Derivation and Analysis of the \textit{sGMRES}}
 
 Let $n \in \NaturalNumbers$,  $\Matrix{A} \in \RealMatrices{n}{n}$ and $\Vector{b} \in \RealVectors{n}$, the goal is to find $\Vector{x} \in \RealVectors{n}$ such that:
 \begin{align}
@@ -48,3 +50,15 @@ To derive the \textit{sGMRES}, sketch \cref{eq:min_problem} by fixing $s \in \Na
 \begin{align}
     \Vector{y} = \min_{\Vector{z} \in \RealVectors{d}} \Norm{ \Matrix{S} \left( \Vector{r}_0 - \Matrix{A} \Matrix{B} \Vector{z} \right)}_2. \label{eq:sketched_min_problem}
 \end{align}
+
+Denote, similarly as in \cref{fact:least_squares}, by $\Vector{y}_{\star}, \Vector{y}^{\star} \in \RealVectors{d}$ the solutions of \cref{eq:min_problem,eq:sketched_min_problem}. It follows by \cref{eq:sketched_least_squares_2} that:
+\begin{align}
+    \Norm{\Matrix{A} \Vector{x}_{\star} - \Vector{b}}_2 \leq \Norm{\Matrix{A} \Vector{x}^{\star} - \Vector{b}}_2 \leq \frac{1 + \varepsilon}{1 - \varepsilon} \Norm{\Matrix{A} \Vector{x}_{\star} - \Vector{b}}_2, \label{eq:sketched_gmres_estimate}
+\end{align}
+where:
+\begin{align}
+    \Vector{x}_{\star} &= \Vector{x}_0 + \Matrix{B} \Vector{y}_{\star}, \\
+    \Vector{x}^{\star} &= \Vector{x}_0 + \Matrix{B} \Vector{y}^{\star}.
+\end{align}
+
+Simply put, \cref{eq:sketched_gmres_estimate} implies that \textit{sGMRES} produce an approximate solution to \cref{eq:system} with a small residual when \textit{GMRES} does.
