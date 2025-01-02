@@ -1,0 +1,32 @@
+\subsection{Subspace Embedding}
+
+The subspace embedding of choice is the sparse reduction map. Fix $s = 2 \left( d + 1 \right)$, which typically yields $\varepsilon \approx 1 / \sqrt{2}$, and construct $\Matrix{S} \in \RealMatrices{s}{n}$ such that each column has exactly $\lceil 2 \log \left( d + 1 \right) \rceil$ nonzero entries placed at uniformly random coordinates. The values of these entries are chosen uniformly at random to be either $1 / \sqrt{s}$ or $-1 / \sqrt{s}$.
+
+The choice of this subspace embedding is motivated by the need for fast matrix-vector multiplications and low memory consumption.
+
+\subsection{Basis Construction} \label{sseq:basis}
+
+A possibility for the basis construction for the \textit{sGMRES} is to build an orthonormal, or partially orthonormal, basis $\Matrix{B}$ of the Krilov subspace $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$.
+
+The following algorithm illustrates the $k$-truncated Arnoldi process which, fixed $k \in \NaturalNumbers$ with $k \ll d$, produce a k-orthonormal basis $\Matrix{B}$ for $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$ and the least-squares matrix $\Matrix{M} \coloneqq \Matrix{A} \Matrix{B}$.
+
+\begin{algorithm}
+\caption{$k$-Truncated Arnoldi} \label{alg:arnoldi}
+\setstretch{1.1}
+\begin{algorithmic}
+\State $\Matrix{B}_1 \gets \Vector{r}_0 / \Norm{\Vector{r}_0}_2$
+\State $\Matrix{M}_1 \gets \Matrix{A} \Matrix{B}_1$
+\For{ $j = 2, \dots, k$ }
+\State $\Matrix{B}_j \gets \left( \mathbf{I}_n - \Matrix{B}_{j - 1}\Matrix{B}_{j - 1}^{\intercal} - \dots - \Matrix{B}_{1}\Matrix{B}_{1}^{\intercal} \right) \Matrix{M}_{j - 1}$
+\State $\Matrix{B}_j \gets \Matrix{B}_{j - 1} / \Norm{\Matrix{B}_{j - 1}}_2$
+\State $\Matrix{M}_j \gets \Matrix{A} \Matrix{B}_j$
+\EndFor
+\For{ $j = k + 1, \dots, d$ }
+\State $\Matrix{B}_j \gets \left( \mathbf{I}_n - \Matrix{B}_{j - 1}\Matrix{B}_{j - 1}^{\intercal} - \dots - \Matrix{B}_{j - k}\Matrix{B}_{j - k}^{\intercal} \right) \Matrix{M}_{j - 1}$
+\State $\Matrix{B}_j \gets \Matrix{B}_{j - 1} / \Norm{\Matrix{B}_{j - 1}}_2$
+\State $\Matrix{M}_j \gets \Matrix{A} \Matrix{B}_j$
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+The $k$-Truncated Arnoldi method reduces the cost of basis construction from $\BigO{n d^2}$ to $\BigO{n k^2}$ while still producing accurate solutions, provided that the reduced matrix $\Matrix{A} \Matrix{B}$ is reasonably well-conditioned.
