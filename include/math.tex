@@ -17,6 +17,9 @@
 % Tags.
 \numberwithin{equation}{section}
 
+%% Theorems.
+\newtheorem{definition}{Definition}[section]
+
 % Sets.
 \newcommand{\NaturalNumbers}{\mathbb{N}}
 \newcommand{\IntegerNumbers}{\mathbb{Z}}
@@ -24,7 +27,7 @@
 
 \newcommand{\RealNumbers}{\mathbb{R}}
 \newcommand{\RealVectors}[1]{\mathbb{R}^{#1}}
-\newcommand{\RealMatrices}[2]{\mathbb{R}^{#1 \timex #2}}
+\newcommand{\RealMatrices}[2]{\mathbb{R}^{#1 \times #2}}
 
 % Vectors.
 \newcommand{\Vector}[1]{\bm{#1}}
@@ -35,3 +38,7 @@
 % Norms.
 \newcommand{\Norm}[1]{\left\lVert #1 \right\rVert}
 \newcommand{\Seminorm}[1]{\left\lvert #1 \right\rvert}
+
+% Operators.
+\DeclareMathOperator*{\RangeOperator}{range}
+\newcommand{\Range}[1]{\RangeOperator\left\{#1\right\}}
