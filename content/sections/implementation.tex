@@ -11,22 +11,24 @@ A possibility for the basis construction for the \textit{sGMRES} is to build an 
 The following algorithm illustrates the $k$-truncated Arnoldi process which, fixed $k \in \NaturalNumbers$ with $k \ll d$, produce a k-orthonormal basis $\Matrix{B}$ for $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$ and the least-squares matrix $\Matrix{M} \coloneqq \Matrix{A} \Matrix{B}$.
 
 \begin{algorithm}
-\caption{$k$-Truncated Arnoldi} \label{alg:arnoldi}
-\setstretch{1.1}
+\caption{$k$-Truncated Arnoldi Method} \label{alg:arnoldi}
+\setstretch{1.15}
 \begin{algorithmic}
 \State $\Matrix{B}_1 \gets \Vector{r}_0 / \Norm{\Vector{r}_0}_2$
 \State $\Matrix{M}_1 \gets \Matrix{A} \Matrix{B}_1$
-\For{ $j = 2, \dots, k$ }
-\State $\Matrix{B}_j \gets \left( \mathbf{I}_n - \Matrix{B}_{j - 1}\Matrix{B}_{j - 1}^{\intercal} - \dots - \Matrix{B}_{1}\Matrix{B}_{1}^{\intercal} \right) \Matrix{M}_{j - 1}$
-\State $\Matrix{B}_j \gets \Matrix{B}_{j - 1} / \Norm{\Matrix{B}_{j - 1}}_2$
-\State $\Matrix{M}_j \gets \Matrix{A} \Matrix{B}_j$
+\For{$j = 2, \dots, k$}
+    \State $\Matrix{B}_j \gets \left( \mathbf{I}_n - \sum_{i=1}^{j-1} \Matrix{B}_i \Matrix{B}_i^{\intercal} \right) \Matrix{M}_{j-1}$
+    \State $\Matrix{B}_j \gets \Matrix{B}_j / \Norm{\Matrix{B}_j}_2$
+    \State $\Matrix{M}_j \gets \Matrix{A} \Matrix{B}_j$
 \EndFor
-\For{ $j = k + 1, \dots, d$ }
-\State $\Matrix{B}_j \gets \left( \mathbf{I}_n - \Matrix{B}_{j - 1}\Matrix{B}_{j - 1}^{\intercal} - \dots - \Matrix{B}_{j - k}\Matrix{B}_{j - k}^{\intercal} \right) \Matrix{M}_{j - 1}$
-\State $\Matrix{B}_j \gets \Matrix{B}_{j - 1} / \Norm{\Matrix{B}_{j - 1}}_2$
-\State $\Matrix{M}_j \gets \Matrix{A} \Matrix{B}_j$
+\For{$j = k + 1, \dots, d$}
+    \State $\Matrix{B}_j \gets \left( \mathbf{I}_n - \sum_{i=j-k}^{j-1} \Matrix{B}_i \Matrix{B}_i^{\intercal} \right) \Matrix{M}_{j-1}$
+    \State $\Matrix{B}_j \gets \Matrix{B}_j / \Norm{\Matrix{B}_j}_2$
+    \State $\Matrix{M}_j \gets \Matrix{A} \Matrix{B}_j$
 \EndFor
 \end{algorithmic}
 \end{algorithm}
 
-The $k$-Truncated Arnoldi method reduces the cost of basis construction from $\BigO{n d^2}$ to $\BigO{n k^2}$ while still producing accurate solutions, provided that the reduced matrix $\Matrix{A} \Matrix{B}$ is reasonably well-conditioned.
+The $k$-Truncated Arnoldi method reduces the cost of basis construction from $\BigO{n d^2}$ to $\BigO{n k^2}$ while still producing accurate solutions, provided that the reduced matrix $\Matrix{A} \Matrix{B}$ is reasonably well-conditioned. The parameter $k$ is typically chosen to be a small number, such as $2$ or $4$.
+
+\subsection{Sketched Least-Squares Problem} \label{sseq:least_squares}
