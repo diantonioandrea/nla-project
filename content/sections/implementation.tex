@@ -58,17 +58,17 @@ The approximate solution $\Vector{x} = \Vector{x}_0 + \Matrix{B} \Vector{y}$ is 
 The following algorithm summarizes the \textit{sGMRES} method as implemented for this report.
 
 \begin{algorithm}
-    \caption{\textit{k-sGMRES}} \label{alg:sgmres}
-    \setstretch{1.15}
-    \begin{algorithmic}
-    \Require $\Matrix{A} \in \RealMatrices{n}{n}$, $\Vector{b} \in \RealVectors{n}$, $\Vector{x}_0 \in \RealVectors{n}$, $d, k \in \NaturalNumbers$
-    \Ensure $\Vector{x} \in \RealVectors{n}$ approximate solution to $\Matrix{A} \Vector{x} = \Vector{b}$
-    \State $\Vector{r}_0 \gets \Vector{b} - \Matrix{A} \Vector{x}_0$
-    \State Set $s = 2 (d + 1)$ and construct $\Matrix{S} \in \RealMatrices{s}{n}$ subspace embedding \Comment Refer to \cref{sseq:embdedding}.
-    \State Apply \cref{alg:arnoldi} to construct $\Matrix{B} \in \RealMatrices{n}{d}$ and $\Matrix{M} \coloneqq \Matrix{A} \Matrix{B}$ \Comment Refer to \cref{sseq:basis}.
-    \State Sketch reduced matrix $\Matrix{S} \Matrix{M}$ and construct its QR factorization $\Matrix{S} \Matrix{M} = \Matrix{Q} \Matrix{R}$
-    \State Solve the least-squares problem $\Vector{y} = \Matrix{R}^{-1} \Matrix{Q}^{\intercal} \Matrix{S} \Vector{r}_0$
-    \State Evaluate the residual estimate $\Norm{ \left( \mathbf{I}_s - \Matrix{Q} \Matrix{Q}^{\intercal} \right) \Matrix{S} \Vector{r}_0 }_2$
-    \State Construct the approximate solution $\Vector{x} = \Vector{x}_0 + \Matrix{B} \Vector{y}$
-    \end{algorithmic}
-    \end{algorithm}
+\caption{\textit{k-sGMRES}} \label{alg:sgmres}
+\setstretch{1.15}
+\begin{algorithmic}
+\Require $\Matrix{A} \in \RealMatrices{n}{n}$, $\Vector{b} \in \RealVectors{n}$, $\Vector{x}_0 \in \RealVectors{n}$, $d, k \in \NaturalNumbers$
+\Ensure $\Vector{x} \in \RealVectors{n}$ approximate solution to $\Matrix{A} \Vector{x} = \Vector{b}$
+\State $\Vector{r}_0 \gets \Vector{b} - \Matrix{A} \Vector{x}_0$
+\State Set $s = 2 (d + 1)$ and construct $\Matrix{S} \in \RealMatrices{s}{n}$ subspace embedding \Comment Refer to \cref{sseq:embdedding}.
+\State Apply \cref{alg:arnoldi} to construct $\Matrix{B} \in \RealMatrices{n}{d}$ and $\Matrix{M} \coloneqq \Matrix{A} \Matrix{B}$ \Comment Refer to \cref{sseq:basis}.
+\State Sketch reduced matrix $\Matrix{S} \Matrix{M}$ and construct its QR factorization $\Matrix{S} \Matrix{M} = \Matrix{Q} \Matrix{R}$
+\State Solve the least-squares problem $\Vector{y} = \Matrix{R}^{-1} \Matrix{Q}^{\intercal} \Matrix{S} \Vector{r}_0$
+\State Evaluate the residual estimate $\Norm{ \left( \mathbf{I}_s - \Matrix{Q} \Matrix{Q}^{\intercal} \right) \Matrix{S} \Vector{r}_0 }_2$
+\State Construct the approximate solution $\Vector{x} = \Vector{x}_0 + \Matrix{B} \Vector{y}$
+\end{algorithmic}
+\end{algorithm}
