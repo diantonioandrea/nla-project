@@ -28,6 +28,8 @@ As illustrated in \cref{fig:t2em}, the \textit{k-sGMRES} algorithm demonstrates 
         \begin{tikzpicture}[scale=.9]
             \begin{loglogaxis}[
                 xlabel={Iterations $\left( d \right)$},
+                xtick={100, 250, 500, 1000, 2500, 5000},
+                xticklabels={100, 250, 500, 1000, 2500, 5000},
                 ylabel={Residual $\left( \Norm{\Matrix{A} \Vector{x} - \Vector{b}}_2 / \Norm{\Vector{b}}_2 \right)$},
                 grid=both,
                 legend pos=south west
@@ -43,6 +45,8 @@ As illustrated in \cref{fig:t2em}, the \textit{k-sGMRES} algorithm demonstrates 
         \begin{tikzpicture}[scale=.9]
             \begin{loglogaxis}[
                 xlabel={Iterations $\left( d \right)$},
+                xtick={100, 250, 500, 1000, 2500, 5000},
+                xticklabels={100, 250, 500, 1000, 2500, 5000},
                 ylabel={Time $\left[ \unit{ms} \right]$},
                 grid=both,
                 legend pos=south east
@@ -59,17 +63,18 @@ As illustrated in \cref{fig:t2em}, the \textit{k-sGMRES} algorithm demonstrates 
 
 Moreover, \cref{fig:stokes} demonstrates that the \textit{k-sGMRES} algorithm is capable of handling larger matrices, such as the \textbf{stokes} matrix. To improve convergence, preconditioning techniques can and should be applied.
 
-% Missing data for stokes, sGMRES.
 \begin{figure}[!ht]
     \begin{subfigure}[b]{0.49\textwidth}
         \begin{tikzpicture}[scale=.9]
             \begin{loglogaxis}[
                 xlabel={Iterations $\left( d \right)$},
+                xtick={100, 250, 500, 1000, 2500, 5000},
+                xticklabels={100, 250, 500, 1000, 2500, 5000},
                 ylabel={Residual $\left( \Norm{\Matrix{A} \Vector{x} - \Vector{b}}_2 / \Norm{\Vector{b}}_2 \right)$},
                 grid=both,
                 legend pos=north east
             ]
-            \addplot[color=\accentcolor, mark=*] coordinates {(100,1.037e-03) (250,3.628e-04) (500,1.236e-04) (1000,4.016e-05) (2500,1.131e-05)};
+            \addplot[color=\accentcolor, mark=*] coordinates {(100,1.037e-03) (250,3.628e-04) (500,1.236e-04) (1000,4.016e-05) (2500,1.131e-05) (5000,2.377e-06)};
             \legend{\textit{k-sGMRES} (\lstinline{C++23})}
             \end{loglogaxis}
         \end{tikzpicture}
@@ -77,16 +82,17 @@ Moreover, \cref{fig:stokes} demonstrates that the \textit{k-sGMRES} algorithm is
     \hfill
     \begin{subfigure}[b]{0.49\textwidth}
         \begin{tikzpicture}[scale=.9]
-            \begin{loglogaxis}[
-                xlabel={Iterations $\left( d \right)$},
-                ylabel={Time $\left[ \unit{ms} \right]$},
-                grid=both,
-                legend pos=north west
-            ]
-            \addplot[color=\accentcolor, mark=*] coordinates {(100,113070) (250,281376) (500,568571)(1000,1147874) (2500,3030201)};
-            \legend{\textit{k-sGMRES} (\lstinline{C++23})}
-            \end{loglogaxis}
-        \end{tikzpicture}
+             \begin{loglogaxis}[
+                    xlabel={Iterations $\left( d \right)$},
+                    xtick={100, 250, 500, 1000, 2500, 5000},
+                    xticklabels={100, 250, 500, 1000, 2500, 5000},
+                    ylabel={Time $\left[ \unit{ms} \right]$},
+                    grid=both,
+                    legend pos=north west
+                ]
+                \addplot[color=\accentcolor, mark=*] coordinates {(100,113070) (250,281376) (500,568571)(1000,1147874) (2500,3030201) (5000,6211285)};
+                \legend{\textit{k-sGMRES} (\lstinline{C++23})}
+                \end{loglogaxis}       \end{tikzpicture}
     \end{subfigure}
     \caption{Evaluation of the performance of the \textit{k-sGMRES} algorithm with $k = 4$ for the \textbf{stokes} matrix, in terms of relative residual (left) and computation time (right).}
     \label{fig:stokes}
