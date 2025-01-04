@@ -30,9 +30,9 @@ The following algorithm illustrates the k-truncated Arnoldi process which, fixed
 \end{algorithmic}
 \end{algorithm}
 
-The k-Truncated Arnoldi method reduces the cost of basis construction from $\BigO{n d^2}$ to $\BigO{n k^2}$ while still producing accurate solutions, provided that the reduced matrix $\Matrix{A} \Matrix{B}$ is reasonably well-conditioned. The parameter $k$ is typically chosen to be a small number, such as $2$ or $4$.
+The $k$-Truncated Arnoldi method reduces the cost of basis construction from $\mathcal{O}(n d^2)$ to $\mathcal{O}(n k^2)$ while still producing accurate solutions, provided that the reduced matrix $\Matrix{A} \Matrix{B}$ is reasonably well-conditioned. The parameter $k$ is typically chosen to be a small number, such as $2$ or $4$.
 
-Moreover, since storage and memory are at a premium when handling large-scale problems (i.e., $n \gg 10^6$), the Arnoldi process is implemented in a streaming fashion. Specifically, the basis $\Matrix{B}$ is constructed and discarded twice: once during the construction of $\Matrix{S} \Matrix{M}$ and again during the evaluation of $\Vector{x}$. Only $k n$ values need to be stored at any given time, instead of $dn$.
+Moreover, since storage and memory are limited when handling large-scale problems (i.e., $n \gg \num{1e6}$), the Arnoldi process is implemented in a streaming fashion. Specifically, the basis $\Matrix{B}$ is constructed and discarded twice: once during the construction of $\Matrix{S} \Matrix{M}$ and again during the evaluation of $\Vector{x}$. Only $k n$ values need to be stored at any given time, as opposed to $d n$.
 
 \newpage
 \subsection{Sketched Least-Squares Problem} \label{sseq:least_squares}
