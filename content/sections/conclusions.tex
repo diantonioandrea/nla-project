@@ -1,0 +1,9 @@
+\subsection{Considerations}
+
+This work presents the development and analysis of the \textit{k-sGMRES} algorithm, an efficient variant of the \textit{GMRES} method for solving large, sparse linear systems. The algorithm is evaluated against \lstinline{MATLAB}'s \textit{GMRES}, demonstrating superior performance in terms of computational time while maintaining comparable accuracy in relative residuals. Moreover, as implemented, \textit{k-sGMRES} is capable of handling arbitrarily large matrices, where the only limitation is the available memory.
+
+\subsection{Possible Improvements}
+
+The algorithm and its implementation can be improved in several ways. For example, it could be extended to support larger matrices through direct storage access, which would reduce memory overhead by shifting the constraint from available memory to storage, or by using matrix handlers, enabling streamed matrix constructions.
+
+Additionally, simple and general preconditioning techniques could be applied to improve convergence for ill-conditioned matrices, such as the \textbf{stokes} matrix. More advanced techniques are problem-specific and lie outside the scope of this work.
