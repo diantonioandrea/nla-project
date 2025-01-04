@@ -57,7 +57,7 @@ As illustrated in \cref{fig:t2em}, the \textit{k-sGMRES} algorithm demonstrates 
     \label{fig:t2em}
 \end{figure}
 
-Moreover, \cref{fig:stokes} demonstrates that the \textit{k-sGMRES} algorithm is capable of handling larger matrices, such as the \textbf{stokes} matrix, where \lstinline{MATLAB}'s \textit{GMRES} algorithm fails to converge due to memory and time limitations.
+Moreover, \cref{fig:stokes} demonstrates that the \textit{k-sGMRES} algorithm is capable of handling larger matrices, such as the \textbf{stokes} matrix, where \lstinline{MATLAB}'s \textit{GMRES} algorithm fails to converge due to memory and time limitations. To improve convergence, preconditioning techniques can and should be applied.
 
 % Missing data for stokes, sGMRES.
 \begin{figure}[!ht]
@@ -69,7 +69,7 @@ Moreover, \cref{fig:stokes} demonstrates that the \textit{k-sGMRES} algorithm is
                 grid=both,
                 legend pos=north east
             ]
-            \addplot[color=\accentcolor, mark=*] coordinates {(100,1.037e-03) (250,3.628e-04) (500,1.236e-04) (1000,4.016e-05)};
+            \addplot[color=\accentcolor, mark=*] coordinates {(100,1.037e-03) (250,3.628e-04) (500,1.236e-04) (1000,4.016e-05) (2500,1.131e-05)};
             \legend{\textit{k-sGMRES} (\lstinline{C++23})}
             \end{loglogaxis}
         \end{tikzpicture}
@@ -83,7 +83,7 @@ Moreover, \cref{fig:stokes} demonstrates that the \textit{k-sGMRES} algorithm is
                 grid=both,
                 legend pos=north west
             ]
-            \addplot[color=\accentcolor, mark=*] coordinates {(100,113070) (250,281376) (500,568571)(1000,1147874)};
+            \addplot[color=\accentcolor, mark=*] coordinates {(100,113070) (250,281376) (500,568571)(1000,1147874) (2500,3030201)};
             \legend{\textit{k-sGMRES} (\lstinline{C++23})}
             \end{loglogaxis}
         \end{tikzpicture}
