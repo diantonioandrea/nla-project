@@ -1,8 +1,8 @@
 \subsection{Implementation}
 
-The algorithm is implemented in (low-level) \lstinline{C++23} using Neon\footnote{Disabled on non-supported architectures.} intrinsics for SIMD operations and OpenMP for parallelization. The implementation is available on \href{https://github.com/diantonioandrea/NASS}{GitHub}.
+The algorithm is implemented in low-level \lstinline{C++23} using Neon\footnote{Disabled on non-supported architectures} intrinsics for SIMD operations and OpenMP for parallelization. The implementation is available on \href{https://github.com/diantonioandrea/NASS}{GitHub}.
 
-By default, the algorithm uses the memory-priority approach discussed in \cref{sseq:basis}.
+By default, the algorithm employs the memory-priority approach discussed in \cref{sseq:basis}, which reduces memory overhead by storing only the necessary columns of $\Matrix{B}$.
 
 \subsection{Test Configuration}
 
