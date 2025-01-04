@@ -6,22 +6,26 @@ By default, the algorithm uses the memory-priority approach discussed in \cref{s
 
 \subsection{Test Configuration}
 
-The algorithm is tested against the following matrices available on \href{https://sparse.tamu.edu}{SuiteSparse}:
+The algorithm is tested using the following matrices available on \href{https://sparse.tamu.edu}{SuiteSparse}:
 
 \begin{description}
-    \item[\href{https://sparse.tamu.edu/CEMW/t2em}{t2em}] A non-symmetric matrix with $n \approx \num{9.2e5}$.
-    \item[\href{https://sparse.tamu.edu/VLSI/stokes}{stokes}] A non-symmetric and ill-conditioned matrix with $n \approx \num{1.1e7}$.
+    \item[\href{https://sparse.tamu.edu/CEMW/t2em}{t2em}] A non-symmetric square matrix with $n \approx \num{9.2e5}$ and approximately $\num{4.5e6}$ non-zero entries, arising from an electromagnetics problem.
+    \item[\href{https://sparse.tamu.edu/VLSI/stokes}{stokes}] A non-symmetric, ill-conditioned square matrix with $n \approx \num{1.1e7}$ and approximately $\num{3.5e8}$ non-zero entries, originating from a semiconductor process problem.
 \end{description}
 
-The right-hand side $\Vector{b} \in \RealVectors{n}$ is obtained by $\Vector{b} = \Matrix{A} \Vector{g}$ where $\Vector{g} \in \RealVectors{n}$ is a random vector drawn from the standard normal distribution.
+The right-hand side $\Vector{b} \in \RealVectors{n}$ is computed as $\Vector{b} = \Matrix{A} \Vector{g}$, where $\Vector{g} \in \RealVectors{n}$ is a random vector sampled from the standard normal distribution.
+
+The tests are conducted on a machine equipped with an AMD Ryzen 7 3700X CPU and 64 GB of RAM.
 
 \newpage
 \subsection{Results}
 
+As illustrated in \cref{fig:t2em}, the \textit{k-sGMRES} algorithm demonstrates similar behavior to \lstinline{MATLAB}'s \textit{GMRES} algorithm with respect to relative residuals, while significantly outperforming it in terms of computational time.
+
 % Missing data for t2em, GMRES.
-\begin{figure}[!ht] \label{fig:t2em}
+\begin{figure}[!ht]
     \begin{subfigure}[b]{0.49\textwidth}
-        \begin{tikzpicture}[scale=.95]
+        \begin{tikzpicture}[scale=.9]
             \begin{loglogaxis}[
                 xlabel={Iterations $\left( d \right)$},
                 ylabel={Residual $\left( \Norm{\Matrix{A} \Vector{x} - \Vector{b}}_2 / \Norm{\Vector{b}}_2 \right)$},
@@ -36,7 +40,7 @@ The right-hand side $\Vector{b} \in \RealVectors{n}$ is obtained by $\Vector{b} 
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.49\textwidth}
-        \begin{tikzpicture}[scale=.95]
+        \begin{tikzpicture}[scale=.9]
             \begin{loglogaxis}[
                 xlabel={Iterations $\left( d \right)$},
                 ylabel={Time $\left[ \unit{ms} \right]$},
@@ -49,37 +53,41 @@ The right-hand side $\Vector{b} \in \RealVectors{n}$ is obtained by $\Vector{b} 
             \end{loglogaxis}
         \end{tikzpicture}
     \end{subfigure}
-    \caption{These graphs compare the performance, in terms of relative residual (left) and time (right), of the \textit{k-sGMRES} algorithm with $k = 4$ against \lstinline{MATLAB}'s \textit{GMRES} algorithm for the \textbf{t2em} matrix.}
+    \caption{Comparison of the performance of the \textit{k-sGMRES} algorithm with $k = 4$ against \lstinline{MATLAB}'s \textit{GMRES} algorithm for the \textbf{t2em} matrix, in terms of relative residual (left) and computation time (right).}
+    \label{fig:t2em}
 \end{figure}
 
+Moreover, \cref{fig:stokes} demonstrates that the \textit{k-sGMRES} algorithm is capable of handling larger matrices, such as the \textbf{stokes} matrix, where \lstinline{MATLAB}'s \textit{GMRES} algorithm fails to converge due to memory and time limitations.
+
 % Missing data for stokes, sGMRES.
-\begin{figure}[!ht] \label{fig:stokes}
+\begin{figure}[!ht]
     \begin{subfigure}[b]{0.49\textwidth}
-        \begin{tikzpicture}[scale=.95]
+        \begin{tikzpicture}[scale=.9]
             \begin{loglogaxis}[
                 xlabel={Iterations $\left( d \right)$},
                 ylabel={Residual $\left( \Norm{\Matrix{A} \Vector{x} - \Vector{b}}_2 / \Norm{\Vector{b}}_2 \right)$},
                 grid=both,
                 legend pos=north east
             ]
-            \addplot[color=\accentcolor, mark=*] coordinates {(100,1.037e-03) (250,3.628e-04)};
+            \addplot[color=\accentcolor, mark=*] coordinates {(100,1.037e-03) (250,3.628e-04) (500,1.236e-04) (1000,4.016e-05)};
             \legend{\textit{k-sGMRES} (\lstinline{C++23})}
             \end{loglogaxis}
         \end{tikzpicture}
     \end{subfigure}
     \hfill
     \begin{subfigure}[b]{0.49\textwidth}
-        \begin{tikzpicture}[scale=.95]
+        \begin{tikzpicture}[scale=.9]
             \begin{loglogaxis}[
                 xlabel={Iterations $\left( d \right)$},
                 ylabel={Time $\left[ \unit{ms} \right]$},
                 grid=both,
                 legend pos=north west
             ]
-            \addplot[color=\accentcolor, mark=*] coordinates {(100,113070) (250,281376)};
+            \addplot[color=\accentcolor, mark=*] coordinates {(100,113070) (250,281376) (500,568571)(1000,1147874)};
             \legend{\textit{k-sGMRES} (\lstinline{C++23})}
             \end{loglogaxis}
         \end{tikzpicture}
     \end{subfigure}
-    \caption{These graphs evaluates the performance, in terms of relative residual (left) and time (right), of the \textit{k-sGMRES} algorithm with $k = 4$ for the \textbf{stokes} matrix.}
+    \caption{Evaluation of the performance of the \textit{k-sGMRES} algorithm with $k = 4$ for the \textbf{stokes} matrix, in terms of relative residual (left) and computation time (right).}
+    \label{fig:stokes}
 \end{figure}
