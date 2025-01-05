@@ -7,11 +7,11 @@
     \end{align}
 \end{definition}
 
-Due to the fact that the subspace $L$ in \cref{def:embedding} is usually unknown, the subspace embedding $\Matrix{S}$ is constructed at random in order to achieve \cref{eq:embedding} with high probability.
+Since the subspace $L$ in \cref{def:embedding} is typically unknown, the subspace embedding $\Matrix{S}$ is constructed randomly to satisfy \cref{eq:embedding} with high probability.
 
 \subsection{Sketching for Least-Squares Problems}
 
-Subspace embeddings, as defined in \cref{def:embedding}, can be used to reduces the dimension of a least-squares problem.
+Subspace embeddings, as defined in \cref{def:embedding}, can be used to reduce the dimensionality of a least-squares problem.
 
 \begin{Fact}[Sketching for least-squares problems] \label{fact:least_squares}
     Let $s, d, n \in \NaturalNumbers$, $\Matrix{M} \in \RealMatrices{n}{d}$, $\Vector{v} \in \RealVectors{n}$ and consider $\Matrix{S} \in \RealMatrices{s}{n}$ subspace embedding for $\Range{\Matrix{M}, \Vector{v}}$. By \cref{def:embedding}:
@@ -31,7 +31,7 @@ Let $n \in \NaturalNumbers$,  $\Matrix{A} \in \RealMatrices{n}{n}$ and $\Vector{
     \Matrix{A} \Vector{x} = \Vector{b}. \label{eq:system}
 \end{align}
 
-Consider $d \in \NaturalNumbers$ such that $d \ll n$ and fix $\Matrix{B} \in \RealMatrices{n}{d}$, called \textit{basis}\footnote{Refer to \cref{sseq:basis} for a possible construction.}, with the property that $\Range{\Matrix{B}}$ contains a good approximate solution of \cref{eq:system}, that is:
+Consider $d \in \NaturalNumbers$ such that $d \ll n$, and fix $\Matrix{B} \in \RealMatrices{n}{d}$, called the \textit{basis}\footnote{Refer to \cref{sseq:basis} for a possible construction.}, with the property that $\Range{\Matrix{B}}$ contains a good approximate solution to \cref{eq:system}, that is,:
 \begin{align}
     \Matrix{A} \Matrix{B} \Vector{y} &\approx \Vector{b} &\text{for some } \Vector{y} \in \RealVectors{d}. \label{eq:app_system}
 \end{align}
