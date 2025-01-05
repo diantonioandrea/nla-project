@@ -1,14 +1,14 @@
 \subsection{Subspace Embedding} \label{sseq:embdedding}
 
-The subspace embedding of choice is the sparse reduction map. Fix $s = 2 \left( d + 1 \right)$, which typically yields $\varepsilon \approx 1 / \sqrt{2}$, and construct $\Matrix{S} \in \RealMatrices{s}{n}$ such that each column has exactly $\lceil 2 \log \left( d + 1 \right) \rceil$ nonzero entries placed at uniformly random coordinates. The values of these entries are chosen uniformly at random to be either $1 / \sqrt{s}$ or $-1 / \sqrt{s}$.
+The subspace embedding of choice is the sparse reduction map. Fix $s = 2 \left( d + 1 \right)$, which typically yields $\varepsilon \approx 1 / \sqrt{2}$, and construct $\Matrix{S} \in \RealMatrices{s}{n}$ such that each column has exactly $\lceil 2 \log \left( d + 1 \right) \rceil$ nonzero entries, placed at uniformly random coordinates. The values of these entries are chosen uniformly at random to be either $1 / \sqrt{s}$ or $-1 / \sqrt{s}$.
 
-The choice of this subspace embedding is motivated by the need for fast matrix-vector multiplications and low memory consumption.
+This choice of subspace embedding is motivated by the requirements for fast matrix-vector multiplications, low memory consumption, and ease of implementation.
 
 \subsection{Basis Construction} \label{sseq:basis}
 
-A possibility for the basis construction for the \textit{sGMRES} is to build an orthonormal, or partially orthonormal, basis $\Matrix{B}$ of the Krilov subspace $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$.
+A possible approach for constructing the basis for the \textit{sGMRES} algorithm is to build an orthonormal, or partially orthonormal, basis $\Matrix{B}$ for the Krylov subspace $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$.
 
-The following algorithm illustrates the k-truncated Arnoldi process which, fixed $k \in \NaturalNumbers$ with $k \ll d$, produce a k-orthonormal basis $\Matrix{B}$ for $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$ and the least-squares matrix $\Matrix{M} \coloneqq \Matrix{A} \Matrix{B}$.
+The following algorithm illustrates the $k$-truncated Arnoldi process, which, given $k \in \NaturalNumbers$ with $k \ll d$, produces a $k$-orthonormal basis $\Matrix{B}$ for $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$ and computes the least-squares matrix $\Matrix{M} \coloneqq \Matrix{A} \Matrix{B}$.
 
 \begin{algorithm}
 \caption{k-Truncated Arnoldi Method} \label{alg:arnoldi}
