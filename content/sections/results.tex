@@ -34,7 +34,7 @@ As illustrated in \cref{fig:t2em}, the \textit{k-sGMRES} algorithm demonstrates 
                 grid=both,
                 legend pos=south west
             ]
-            \addplot[color=\accentcolor, mark=*] coordinates {(100,8.059e-06) (250,1.172e-06) (500,3.910e-07) (1000,4.823e-08) (2500,1.426e-12) (5000,4.667e-15)};
+            \addplot[color=\accentcolor, mark=*] coordinates {(100,6.786e-06) (250,4.270e-07) (500,4.052e-08) (1000,2.321e-09) (2500,1.266e-12) (5000,4.508e-15)};
             \addplot[color=black, mark=*] coordinates {(100,4.50e-06) (250,2.9e-07) (500,2.8e-08) (1000,1.6e-09) (2500,9e-13) (5000,7.8e-15)};
             \legend{\textit{k-sGMRES} (\lstinline{C++23}),\textit{GMRES} (\lstinline{MATLAB})}
             \end{loglogaxis}
@@ -51,7 +51,7 @@ As illustrated in \cref{fig:t2em}, the \textit{k-sGMRES} algorithm demonstrates 
                 grid=both,
                 legend pos=south east
             ]
-            \addplot[color=\accentcolor, mark=*] coordinates {(100,2996) (250,6753) (500,13202) (1000,28834) (2500,100100) (5000,285141)};
+            \addplot[color=\accentcolor, mark=*] coordinates {(100,3083) (250,6753) (500,13550) (1000,28192) (2500,102517) (5000,285081)};
             \addplot[color=black, mark=*] coordinates {(100,9937) (250,54045) (500,209483) (1000,792628) (2500,4887066) (5000,10790146)};
             \legend{\textit{k-sGMRES} (\lstinline{C++23}),\textit{GMRES} (\lstinline{MATLAB})}
             \end{loglogaxis}
