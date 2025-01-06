@@ -68,13 +68,13 @@ Moreover, \cref{fig:stokes} demonstrates that the \textit{k-sGMRES} algorithm is
         \begin{tikzpicture}[scale=.9]
             \begin{loglogaxis}[
                 xlabel={Iterations $\left( d \right)$},
-                xtick={100, 250, 500, 1000, 2500, 5000},
-                xticklabels={100, 250, 500, 1000, 2500, 5000},
+                xtick={250, 1000, 5000, 20000},
+                xticklabels={250, 1000, 5000, 20000},
                 ylabel={Residual $\left( \Norm{\Matrix{A} \Vector{x} - \Vector{b}}_2 / \Norm{\Vector{b}}_2 \right)$},
                 grid=both,
                 legend pos=north east
             ]
-            \addplot[color=\accentcolor, mark=*] coordinates {(100,1.037e-03) (250,3.628e-04) (500,1.236e-04) (1000,4.016e-05) (2500,1.131e-05) (5000,2.377e-06)};
+            \addplot[color=\accentcolor, mark=*] coordinates {(100,1.037e-03) (250,3.628e-04) (500,1.236e-04) (1000,4.016e-05) (2500,1.131e-05) (5000,2.377e-06) (10000,1.177e-06) (20000,5.020e-07)};
             \legend{\textit{k-sGMRES} (\lstinline{C++23})}
             \end{loglogaxis}
         \end{tikzpicture}
@@ -84,13 +84,13 @@ Moreover, \cref{fig:stokes} demonstrates that the \textit{k-sGMRES} algorithm is
         \begin{tikzpicture}[scale=.9]
              \begin{loglogaxis}[
                     xlabel={Iterations $\left( d \right)$},
-                    xtick={100, 250, 500, 1000, 2500, 5000},
-                    xticklabels={100, 250, 500, 1000, 2500, 5000},
+                    xtick={250, 1000, 5000, 20000},
+                    xticklabels={250, 1000, 5000, 20000},
                     ylabel={Time $\left[ \unit{ms} \right]$},
                     grid=both,
                     legend pos=north west
                 ]
-                \addplot[color=\accentcolor, mark=*] coordinates {(100,113070) (250,281376) (500,568571)(1000,1147874) (2500,3030201) (5000,6211285)};
+                \addplot[color=\accentcolor, mark=*] coordinates {(100,113070) (250,281376) (500,568571)(1000,1147874) (2500,3030201) (5000,6211285) (10000,13173049) (20000,31922165)};
                 \legend{\textit{k-sGMRES} (\lstinline{C++23})}
                 \end{loglogaxis}       \end{tikzpicture}
     \end{subfigure}
