@@ -1,0 +1,99 @@
+\subsection{Subspace Embedding}
+
+\begin{frame}
+    \frametitle{Subspace Embedding}
+
+    The subspace embedding of choice is the sparse reduction map. 
+    
+    Fix $s = 2 \left( d + 1 \right)$, which typically yields $\varepsilon \approx 1 / \sqrt{2}$.
+    
+    Each column has exactly $\lceil 2 \log \left( d + 1 \right) \rceil$ nonzero entries, placed at uniformly random coordinates. The values of these entries are chosen uniformly at random to be either $1 / \sqrt{s}$ or $-1 / \sqrt{s}$.
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Implementation}
+
+    The following snippet illustrates the construction of the embedding as a CSC matrix. Some lines are omitted.
+
+    The triplet \lstinline{Nv0, Nv1, Rv0} characterizes the matrix.
+
+\begin{lstlisting}[style=cpp]
+const natural_t N2 = 2 * (N0 + 1);
+const natural_t N3 = 
+    static_cast<natural_t>(std::ceil(2.0 * std::log(N0 + 1.0)));
+
+const real_t R0 =
+    1.0 / std::sqrt(static_cast<real_t>(N2)), R1 = -R0;
+
+for(natural_t N4 = 0; N4 < N1; ++N4)
+    for(natural_t N5 = 0; N5 < N3; ++N5) {
+        Nv1[N4 * N3 + N5] = std::rand() % N2;
+        Rv0[N4 * N3 + N5] = (std::rand() % 2) ? R0 : R1;
+    }
+\end{lstlisting}
+
+\end{frame}
+
+\subsection{Basis Construction}
+
+\begin{frame}
+    \frametitle{Basis Construction}
+
+    A possible approach for constructing the basis for the \textit{sGMRES} algorithm is to build an orthonormal, or partially orthonormal, basis $\Matrix{B}$ for the Krylov subspace $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$.
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Algorithm}
+
+    The following algorithm illustrates the k-truncated Arnoldi process.
+
+    \begin{algorithm}[H]
+    \caption{k-Truncated Arnoldi Method} \label{alg:arnoldi}
+    \setstretch{1.15}
+    \begin{algorithmic}
+    \Require $\Matrix{A} \in \RealMatrices{n}{n}$, $\Vector{r}_0 \in \RealVectors{n}$, $d, k \in \NaturalNumbers$
+    \State $\Matrix{B}_1 \gets \Vector{r}_0 / \Norm{\Vector{r}_0}_2$
+    \State $\Matrix{M}_1 \gets \Matrix{A} \Matrix{B}_1$
+    \For{$j = 2, \dots, k$}
+        \State $\Matrix{B}_j \gets \left( \mathbf{I}_n - \sum_{i=1}^{j-1} \Matrix{B}_i \Matrix{B}_i^{\intercal} \right) \Matrix{M}_{j-1}$
+        \State $\Matrix{B}_j \gets \Matrix{B}_j / \Norm{\Matrix{B}_j}_2$
+        \State $\Matrix{M}_j \gets \Matrix{A} \Matrix{B}_j$
+    \EndFor
+    \For{$j = k + 1, \dots, d$}
+        \State $\Matrix{B}_j \gets \left( \mathbf{I}_n - \sum_{i=j-k}^{j-1} \Matrix{B}_i \Matrix{B}_i^{\intercal} \right) \Matrix{M}_{j-1}$
+        \State $\Matrix{B}_j \gets \Matrix{B}_j / \Norm{\Matrix{B}_j}_2$
+        \State $\Matrix{M}_j \gets \Matrix{A} \Matrix{B}_j$
+    \EndFor
+    \end{algorithmic}
+    \end{algorithm}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Implementation}
+
+    The following snippet illustrates the second part of \cref{alg:arnoldi}.
+
+\begin{lstlisting}[style=cpp]
+for(natural_t N4 = N2 + 1; N4 < N1; ++N4) {
+
+    // Copy.
+    Cp_RvtRvN_0(Rm1 + N4 * N0, Rm2 + (N4 - 1) * N0, N0);
+
+    // (Re-)orthogonalization.
+    for(natural_t N5 = 0; N5 < 2; ++N5)
+        for(natural_t N6 = N4 - N2; N6 < N4; ++N6)
+            Prj_RvtRvRvN_0(
+                Rm1 + N4 * N0, Rm1 + N6 * N0, Rm1 + N4 * N0, N0);
+
+    // Normalization.
+    Nrz_RvtN_0(Rm1 + N4 * N0, N0);
+
+    // LS matrix.
+    Mlc_RvtNNvNvRvRv_0(
+        Rm2 + N4 * N0, N0, Nv0, Nv1, Rv0, Rm1 + N4 * N0);
+}
+\end{lstlisting}
+
+\end{frame}

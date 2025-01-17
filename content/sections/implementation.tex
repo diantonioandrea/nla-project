@@ -8,7 +8,7 @@ This choice of subspace embedding is motivated by the requirements for fast matr
 
 A possible approach for constructing the basis for the \textit{sGMRES} algorithm is to build an orthonormal, or partially orthonormal, basis $\Matrix{B}$ for the Krylov subspace $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$.
 
-The following algorithm illustrates the $k$-truncated Arnoldi process, which, given $k \in \NaturalNumbers$ with $k \ll d$, produces a $k$-orthonormal basis $\Matrix{B}$ for $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$ and computes the least-squares matrix $\Matrix{M} \coloneqq \Matrix{A} \Matrix{B}$.
+The following algorithm illustrates the k-truncated Arnoldi process, which, given $k \in \NaturalNumbers$ with $k \ll d$, produces a k-orthonormal basis $\Matrix{B}$ for $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$ and computes the least-squares matrix $\Matrix{M} \coloneqq \Matrix{A} \Matrix{B}$.
 
 \begin{algorithm}
 \caption{k-Truncated Arnoldi Method} \label{alg:arnoldi}
@@ -30,7 +30,7 @@ The following algorithm illustrates the $k$-truncated Arnoldi process, which, gi
 \end{algorithmic}
 \end{algorithm}
 
-The $k$-Truncated Arnoldi method reduces the cost of basis construction from $\mathcal{O}(n d^2)$ to $\mathcal{O}(n k^2)$ while still producing accurate solutions, provided that the reduced matrix $\Matrix{A} \Matrix{B}$ is reasonably well-conditioned. The parameter $k$ is typically chosen to be a small number, such as $2$ or $4$.
+The k-Truncated Arnoldi method reduces the cost of basis construction from $\mathcal{O}(n d^2)$ to $\mathcal{O}(n k^2)$ while still producing accurate solutions, provided that the reduced matrix $\Matrix{A} \Matrix{B}$ is reasonably well-conditioned. The parameter $k$ is typically chosen to be a small number, such as $2$ or $4$.
 
 Moreover, since storage and memory are limited when handling large-scale problems (i.e., $n \gg \num{1e6}$), the Arnoldi process is implemented in a streaming fashion. Specifically, the basis $\Matrix{B}$ is constructed and discarded twice: once during the construction of $\Matrix{S} \Matrix{M}$ and again during the evaluation of $\Vector{x}$. Only $k n$ values need to be stored at any given time, as opposed to $d n$.
 
