@@ -11,7 +11,7 @@
 \usecolortheme[named=solarized-blue]{structure}
 \setbeamercolor{background canvas}{bg=white}
 
-\setbeamersize{text margin left=10mm, text margin right=10mm}
+\setbeamersize{text margin left=8.5mm, text margin right=8.5mm}
 
 \AtBeginSection[]
 {
@@ -40,6 +40,12 @@
 
 % References.
 \usepackage{cleveref}
+
+%% Theorems.
+\newtheorem{Fact}{Fact}[section]
+
+\let\definition\relax
+\newtheorem{definition}{Definition}[section]
 
 % Tags.
 \numberwithin{equation}{section}

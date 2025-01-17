@@ -1,0 +1,82 @@
+\subsection{Definitions and Results}
+
+\begin{frame}
+    \frametitle{Subspace embedding}
+
+    \begin{definition}[Subspace embedding] \label{def:embedding}
+        Let $s, d, n \in \NaturalNumbers$ and consider $\Matrix{M} \in \RealMatrices{n}{d}$ such that \\ $\Range{\Matrix{M}} = L \subseteq \RealVectors{n}$. 
+        
+        A matrix $\Matrix{S} \in \RealMatrices{s}{n}$ is called a subspace embedding for $L$ with distortion $\varepsilon \in \left(0, 1\right)$ if:
+        \begin{align}
+            \left( 1 - \varepsilon \right) \Norm{\Matrix{M} \Vector{y}}_2 \leq \Norm{\Matrix{S} \Matrix{M} \Vector{y}}_2 &\leq \left( 1 + \varepsilon \right) \Norm{\Matrix{M} \Vector{y}}_2 &\text{for all } \Vector{y} \in \RealVectors{d}. \label{eq:embedding}
+        \end{align}
+    \end{definition}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Sketching for least-squares problems}
+
+    \begin{Fact}[Sketching for least-squares problems] \label{fact:least_squares}
+        Let $s, d, n \in \NaturalNumbers$, $\Matrix{M} \in \RealMatrices{n}{d}$, $\Vector{v} \in \RealVectors{n}$ and consider $\Matrix{S} \in \RealMatrices{s}{n}$ subspace embedding for $\Range{\Matrix{M}, \Vector{v}}$ with distortion $\varepsilon \in \left(0, 1\right)$. 
+        
+        By \cref{def:embedding}:
+        \begin{align}
+            \left( 1 - \varepsilon \right) \Norm{\Matrix{M} \Vector{y} - \Vector{v}}_2 \leq \Norm{\Matrix{S} \left( \Matrix{M} \Vector{y} - \Vector{v} \right)}_2 &\leq \left( 1 + \varepsilon \right) \Norm{\Matrix{M} \Vector{y} - \Vector{v}}_2 &\text{for all } \Vector{y} \in \RealVectors{d}. \label{eq:sketched_least_squares_1}
+        \end{align}
+
+        Denote by $\Vector{y}_{\star}, \Vector{y}^{\star} \in \RealVectors{d}$ respectively the solutions to the least-squares problem and the sketched least-squares problem, then:
+        \begin{align}
+            \Norm{\Matrix{M} \Vector{y}_{\star} - \Vector{v}}_2 \leq \Norm{\Matrix{M} \Vector{y}^{\star} - \Vector{v}}_2 \leq \frac{1 + \varepsilon}{1 - \varepsilon} \Norm{\Matrix{M} \Vector{y}_{\star} - \Vector{v}}_2. \label{eq:sketched_least_squares_2}
+        \end{align}
+    \end{Fact}
+\end{frame}
+
+\subsection{Goal and Notation}
+
+\begin{frame}
+    \frametitle{Goal and Notation}
+
+    Let $n \in \NaturalNumbers$,  $\Matrix{A} \in \RealMatrices{n}{n}$ and $\Vector{b} \in \RealVectors{n}$, the goal is to find $\Vector{x} \in \RealVectors{n}$ such that:
+    \begin{align}
+        \Matrix{A} \Vector{x} = \Vector{b}. \label{eq:system}
+    \end{align}
+
+    This problem becomes increasingly challenging as $n$ grows.
+
+\end{frame}
+
+\subsection{Recalling \textit{GMRES}}
+
+\begin{frame}
+    \frametitle{\textit{GMRES}}
+
+    Fix $d \ll n \in \NaturalNumbers$ and $\Matrix{B} \in \RealMatrices{n}{d}$ such that:
+    \begin{align}
+        \Matrix{A} \Matrix{B} \Vector{y} &\approx \Vector{b} &\text{for some } \Vector{y} \in \RealVectors{d}.
+    \end{align}
+
+    Fix an initial guess $\Vector{x}_0 \in \RealVectors{n}$, which leads to $\Vector{r}_0 = \Vector{b} - \Matrix{A} \Vector{x}_0$, then:
+    \begin{align}
+        \Vector{x} = \Vector{x}_0 + \Matrix{B} \Vector{y}.
+    \end{align}
+
+    The goal is now to find $\Vector{y} \in \RealVectors{d}$ such that:
+    \begin{align}
+        \Vector{y} = \min_{\Vector{z} \in \RealVectors{d}} \Norm{\Vector{r}_0 - \Matrix{A} \Matrix{B} \Vector{z}}_2. \label{eq:min_problem}
+    \end{align}
+
+\end{frame}
+
+\subsection{Sketched \textit{GMRES}}
+
+\begin{frame}
+    \frametitle{Sketched \textit{GMRES}}
+
+    Fix $s \in \NaturalNumbers$ and sketch \cref{eq:min_problem}, thereby constructing a subspace embedding $\Matrix{S} \in \RealMatrices{s}{n}$ for $\Range{\Matrix{A} \Matrix{B}, \Vector{r}_0}$ with distortion $\varepsilon \in \left(0, 1\right)$.
+
+    Look now for $\Vector{y} \in \RealVectors{d}$ such that:
+    \begin{align}
+        \Vector{y} = \min_{\Vector{z} \in \RealVectors{d}} \Norm{ \Matrix{S} \left( \Vector{r}_0 - \Matrix{A} \Matrix{B} \Vector{z} \right)}_2. \label{eq:sketched_min_problem}
+    \end{align}
+    
+\end{frame}

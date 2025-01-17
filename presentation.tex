@@ -7,6 +7,7 @@
 
 % Includes.
 \input{./include/presentation.tex} % Presentation.
+\input{./include/code.tex} % Code.
 \input{./include/bibliography.tex} % Bibliography.
 
 % Metadata.
@@ -18,13 +19,33 @@
 
 \begin{document}
 
-\begin{frame}
-    \titlepage
-\end{frame} % Warning on title.
+    \begin{frame}
+        \titlepage
+    \end{frame} % Warning on title.
 
-\begin{frame}{ToC}
-    \frametitle{Contents}
-    \tableofcontents[hideallsubsections]
-\end{frame}
+    \begin{frame}{ToC}
+        \frametitle{Contents}
+        \tableofcontents[hideallsubsections]
+    \end{frame}
+
+    % Content.
+
+    \section{Overview}
+	\input{content/sections/p_introduction.tex}
+
+    \section{Implementation}
+    \input{content/sections/p_implementation.tex}
+
+    \section{Numerical Results}
+
+    \section{Conclusions}
+
+    % References.
+
+    \section*{References}
+    \begin{frame}[allowframebreaks]
+        \nocite{*}
+        \printbibliography
+    \end{frame}
 
 \end{document}
