@@ -81,7 +81,7 @@ Moreover, \cref{fig:stokes} demonstrates that the \textit{k-sGMRES} algorithm is
     \hfill
     \begin{subfigure}[b]{0.49\textwidth}
         \begin{tikzpicture}[scale=.9]
-             \begin{loglogaxis}[
+            \begin{loglogaxis}[
                     xlabel={Iterations $\left( d \right)$},
                     xtick={250, 1000, 5000, 20000},
                     xticklabels={250, 1000, 5000, 20000},
@@ -91,7 +91,8 @@ Moreover, \cref{fig:stokes} demonstrates that the \textit{k-sGMRES} algorithm is
                 ]
                 \addplot[color=\accentcolor, mark=*] coordinates {(100,113070) (250,281376) (500,568571)(1000,1147874) (2500,3030201) (5000,6211285) (10000,13173049) (20000,31922165)};
                 \legend{\textit{k-sGMRES} (\lstinline{C++23})}
-                \end{loglogaxis}       \end{tikzpicture}
+            \end{loglogaxis}
+        \end{tikzpicture}
     \end{subfigure}
     \caption{Evaluation of the performance of the \textit{k-sGMRES} algorithm with $k = 4$ for the \textbf{stokes} matrix, in terms of relative residual (left) and computation time (right).}
     \label{fig:stokes}
