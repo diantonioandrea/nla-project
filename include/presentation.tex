@@ -1,0 +1,71 @@
+% Style.
+\usepackage{xcolor-solarized}
+\color{solarized-base02}
+
+% Beamer.
+\usetheme{metropolis}
+\useinnertheme{circles}
+\useoutertheme{infolines}
+
+\usecolortheme{seahorse} % Double color theme.
+\usecolortheme[named=solarized-blue]{structure}
+\setbeamercolor{background canvas}{bg=white}
+
+\setbeamersize{text margin left=10mm, text margin right=10mm}
+
+\AtBeginSection[]
+{
+  \begin{frame}{ToC}
+    \frametitle{Contents}
+	\tableofcontents[sectionstyle=show/hide,subsectionstyle=show/show/hide]
+  \end{frame}
+}
+
+% Math.
+
+% Math packages
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bbm}
+\usepackage{bm}
+\usepackage{mathrsfs}
+\usepackage{mathtools}
+\usepackage{nicefrac}
+\usepackage{stmaryrd}
+
+% Units.
+\usepackage{siunitx}
+
+% References.
+\usepackage{cleveref}
+
+% Tags.
+\numberwithin{equation}{section}
+
+% Sets.
+\newcommand{\NaturalNumbers}{\mathbb{N}}
+\newcommand{\IntegerNumbers}{\mathbb{Z}}
+\newcommand{\RationalNumbers}{\mathbb{Q}}
+
+\newcommand{\RealNumbers}{\mathbb{R}}
+\newcommand{\RealVectors}[1]{\mathbb{R}^{#1}}
+\newcommand{\RealMatrices}[2]{\mathbb{R}^{#1 \times #2}}
+
+% Vectors.
+\newcommand{\Vector}[1]{\bm{#1}}
+
+% Matrices.
+\newcommand{\Matrix}[1]{\mathcal{#1}}
+
+% Norms.
+\newcommand{\Norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand{\Seminorm}[1]{\left\lvert #1 \right\rvert}
+
+% Big O.
+\newcommand{\BigO}[1]{\mathcal{O} \left( #1 \right)}
+
+% Operators.
+\DeclareMathOperator*{\RangeOperator}{range}
+\newcommand{\Range}[1]{\RangeOperator\left\{#1\right\}}
