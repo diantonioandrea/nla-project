@@ -1,0 +1,136 @@
+\subsection{Test Configuration}
+
+\begin{frame}
+    \frametitle{Test Configuration}
+
+    The algorithm is tested using the following matrices from \href{https://sparse.tamu.edu}{SuiteSparse}:
+
+    \begin{itemize}
+        \item \textbf{\href{https://sparse.tamu.edu/CEMW/t2em}{t2em}}: 
+        \begin{itemize}
+            \item Non-symmetric square matrix.
+            \item $n \approx \num{9.2e5}$, approximately $\num{4.5e6}$ non-zero entries.
+            \item Origin: Electromagnetics problem.
+        \end{itemize}
+        \item \textbf{\href{https://sparse.tamu.edu/VLSI/stokes}{stokes}}: 
+        \begin{itemize}
+            \item Non-symmetric, ill-conditioned square matrix.
+            \item $n \approx \num{1.1e7}$, approximately $\num{3.5e8}$ non-zero entries.
+            \item Origin: Semiconductor process problem.
+        \end{itemize}
+    \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Right-Hand Side Vector and Testing Environment}
+
+    \textbf{Right-hand side vector:}
+    \begin{itemize}
+        \item $\Vector{b} \in \RealVectors{n}$ is computed as $\Vector{b} = \Matrix{A} \Vector{g}$.
+        \item $\Vector{g} \in \RealVectors{n}$ is a random vector sampled from the standard normal distribution.
+    \end{itemize}
+
+    \textbf{Testing environment:}
+    \begin{itemize}
+        \item Processor: AMD Ryzen 7 3700X CPU.
+        \item Memory: 64 GB of RAM.
+    \end{itemize}
+
+\end{frame}
+
+\subsection{Results}
+
+\begin{frame}
+    \frametitle{\textbf{t2em} Matrix}
+
+    The \textit{k-sGMRES} algorithm demonstrates similar behavior to \lstinline{MATLAB}'s \textit{GMRES} in terms of relative residuals, while significantly outperforming it in computational time.
+
+    \begin{figure}[!ht]
+        \begin{subfigure}[b]{0.45\textwidth}
+            \begin{tikzpicture}[scale=.6]
+                \begin{loglogaxis}[
+                    xlabel={Iterations $\left( d \right)$},
+                    xtick={100, 250, 500, 1000, 2500, 5000},
+                    xticklabels={100, 250, 500, 1000, 2500, 5000},
+                    ylabel={Residual $\left( \Norm{\Matrix{A} \Vector{x} - \Vector{b}}_2 / \Norm{\Vector{b}}_2 \right)$},
+                    grid=both,
+                    legend pos=south west
+                ]
+                \addplot[color=\accentcolor, mark=*] coordinates {(100,6.786e-06) (250,4.270e-07) (500,4.052e-08) (1000,2.321e-09) (2500,1.266e-12) (5000,4.508e-15)};
+                \addplot[color=black, mark=*] coordinates {(100,4.50e-06) (250,2.9e-07) (500,2.8e-08) (1000,1.6e-09) (2500,9e-13) (5000,7.8e-15)};
+                \legend{\textit{k-sGMRES} (\lstinline{C++23}),\textit{GMRES} (\lstinline{MATLAB})}
+                \end{loglogaxis}
+            \end{tikzpicture}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.45\textwidth}
+            \begin{tikzpicture}[scale=.6]
+                \begin{loglogaxis}[
+                    xlabel={Iterations $\left( d \right)$},
+                    xtick={100, 250, 500, 1000, 2500, 5000},
+                    xticklabels={100, 250, 500, 1000, 2500, 5000},
+                    ylabel={Time $\left[ \unit{ms} \right]$},
+                    grid=both,
+                    legend pos=south east
+                ]
+                \addplot[color=\accentcolor, mark=*] coordinates {(100,3083) (250,6753) (500,13550) (1000,28192) (2500,102517) (5000,285081)};
+                \addplot[color=black, mark=*] coordinates {(100,9937) (250,54045) (500,209483) (1000,792628) (2500,4887066) (5000,10790146)};
+                \legend{\textit{k-sGMRES} (\lstinline{C++23}),\textit{GMRES} (\lstinline{MATLAB})}
+                \end{loglogaxis}
+            \end{tikzpicture}
+        \end{subfigure}
+        \caption{Comparison of the performance of the \textit{k-sGMRES} algorithm with $k = 4$ against \lstinline{MATLAB}'s \textit{GMRES} algorithm for the \textbf{t2em} matrix, in terms of relative residual (left) and computation time (right).}
+        \label{fig:t2em}
+    \end{figure}
+
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{\textbf{stokes} Matrix}
+
+    The \textit{k-sGMRES} algorithm demonstrates its ability to handle larger matrices, such as the \textbf{stokes} matrix. Preconditioning techniques can further enhance convergence.
+
+    \begin{figure}[!ht]
+        \begin{subfigure}[b]{0.45\textwidth}
+            \begin{tikzpicture}[scale=.6]
+                \begin{loglogaxis}[
+                    xlabel={Iterations $\left( d \right)$},
+                    xtick={250, 1000, 5000, 20000},
+                    xticklabels={250, 1000, 5000, 20000},
+                    ylabel={Residual $\left( \Norm{\Matrix{A} \Vector{x} - \Vector{b}}_2 / \Norm{\Vector{b}}_2 \right)$},
+                    grid=both,
+                    legend pos=north east
+                ]
+                \addplot[color=\accentcolor, mark=*] coordinates {(100,1.037e-03) (250,3.628e-04) (500,1.236e-04) (1000,4.016e-05) (2500,1.131e-05) (5000,2.377e-06) (10000,1.177e-06) (20000,5.020e-07)};
+                \legend{\textit{k-sGMRES} (\lstinline{C++23})}
+                \end{loglogaxis}
+            \end{tikzpicture}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.45\textwidth}
+            \begin{tikzpicture}[scale=.6]
+                \begin{loglogaxis}[
+                        xlabel={Iterations $\left( d \right)$},
+                        xtick={250, 1000, 5000, 20000},
+                        xticklabels={250, 1000, 5000, 20000},
+                        ylabel={Time $\left[ \unit{ms} \right]$},
+                        grid=both,
+                        legend pos=north west
+                    ]
+                    \addplot[color=\accentcolor, mark=*] coordinates {(100,113070) (250,281376) (500,568571)(1000,1147874) (2500,3030201) (5000,6211285) (10000,13173049) (20000,31922165)};
+                    \legend{\textit{k-sGMRES} (\lstinline{C++23})}
+                \end{loglogaxis}
+            \end{tikzpicture}
+        \end{subfigure}
+        \caption{Evaluation of the performance of the \textit{k-sGMRES} algorithm with $k = 4$ for the \textbf{stokes} matrix, in terms of relative residual (left) and computation time (right).}
+        \label{fig:stokes}
+    \end{figure}
+    
+\end{frame}
+
+\begin{frame}
+    \frametitle{Comparison with \lstinline{MATLAB}'s \textit{GMRES}}
+
+    For the \textbf{stokes} matrix, \lstinline{MATLAB}'s \textit{GMRES} fails to converge within a reasonable time frame, highlighting the efficiency of the \textit{k-sGMRES} algorithm for large-scale problems.
+\end{frame}
