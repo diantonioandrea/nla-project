@@ -41,6 +41,7 @@ for(natural_t N4 = 0; N4 < N1; ++N4)
 
     A possible approach for constructing the basis for the \textit{sGMRES} algorithm is to build an orthonormal, or partially orthonormal, basis $\Matrix{B}$ for the Krylov subspace $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$.
 
+    The k-Truncated Arnoldi method reduces the cost of basis construction from $\mathcal{O}(n d^2)$ to $\mathcal{O}(n k^2)$ while still producing accurate solutions, provided that the reduced matrix $\Matrix{A} \Matrix{B}$ is reasonably well-conditioned. The parameter $k$ is typically chosen to be a small number, such as $2$ or $4$.
 \end{frame}
 
 \begin{frame}[fragile]
@@ -95,5 +96,78 @@ for(natural_t N4 = N2 + 1; N4 < N1; ++N4) {
         Rm2 + N4 * N0, N0, Nv0, Nv1, Rv0, Rm1 + N4 * N0);
 }
 \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Memory Considerations}
+
+    Since storage and memory are limited for large-scale problems (i.e., $n \gg \num{1e6}$), the Arnoldi process is implemented in a streaming fashion:
+    \begin{itemize}
+        \item The basis $\Matrix{B}$ is constructed and discarded twice: once during the construction of $\Matrix{S} \Matrix{M}$ and again during the evaluation of $\Vector{x}$.
+        \item Only $k n$ values need to be stored at any given time, as opposed to $d n$.
+    \end{itemize}
+\end{frame}
+
+\subsection{Sketched Least-Squares Problem}
+
+\begin{frame}
+    \frametitle{Sketched Least-Squares Problem}
+
+    The sketched least-squares problem is solved using a QR factorization of the sketched matrix $\Matrix{S} \Matrix{A} \Matrix{B}$.
+
+    Let $\Matrix{Q} \in \RealMatrices{s}{d}$ be orthogonal and $\Matrix{R} \in \RealMatrices{d}{d}$ upper triangular such that:
+    \begin{align}
+        \Matrix{S} \Matrix{A} \Matrix{B} = \Matrix{Q} \Matrix{R},
+    \end{align}
+    then a solution of the sketched minimization problem is given by:
+    \begin{align}
+        \Vector{y} = \Matrix{R}^{-1} \Matrix{Q}^{\intercal} \Matrix{S} \Vector{r}_0.
+    \end{align}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Residual Estimate}
+
+    The residual estimate for the sketched least-squares problem is given by:
+    \begin{align}
+        \Norm{\Vector{r}}_2 = \Norm{ \left( \mathbf{I}_s - \Matrix{Q} \Matrix{Q}^{\intercal} \right) \Matrix{S} \Vector{r}_0 }_2.
+    \end{align}
+    
+    These operations require $\BigO{d^3}$ arithmetic, assuming $s = \BigO{d}$.
+\end{frame}
+
+\begin{frame}
+    \frametitle{Approximate Solution}
+
+    The approximate solution is explicitly formed as:
+    \begin{align}
+        \Vector{x} = \Vector{x}_0 + \Matrix{B} \Vector{y},
+    \end{align}
+    at a cost of $\BigO{n d}$ operations.
+\end{frame}
+
+\subsection{Full Algorithm}
+
+\begin{frame}[fragile]
+    \frametitle{Algorithm: \textit{k-sGMRES}}
+
+    The following algorithm summarizes the \textit{sGMRES} method.
+
+    \begin{algorithm}[H]
+    \caption{\textit{k-sGMRES}} \label{alg:sgmres}
+    \setstretch{1.15}
+    \begin{algorithmic}
+    \Require $\Matrix{A} \in \RealMatrices{n}{n}$, $\Vector{b} \in \RealVectors{n}$, $\Vector{x}_0 \in \RealVectors{n}$, $d, k \in \NaturalNumbers$
+    \Ensure $\Vector{x} \in \RealVectors{n}$ approximate solution to $\Matrix{A} \Vector{x} = \Vector{b}$
+    \State $\Vector{r}_0 \gets \Vector{b} - \Matrix{A} \Vector{x}_0$
+    \State Set $s = 2 (d + 1)$ and construct $\Matrix{S} \in \RealMatrices{s}{n}$ subspace embedding
+    \State Apply \cref{alg:arnoldi} to construct $\Matrix{B} \in \RealMatrices{n}{d}$ and $\Matrix{M} \coloneqq \Matrix{A} \Matrix{B}$
+    \State Sketch reduced matrix $\Matrix{S} \Matrix{M}$ and construct its QR factorization $\Matrix{S} \Matrix{M} = \Matrix{Q} \Matrix{R}$
+    \State Solve the least-squares problem $\Vector{y} = \Matrix{R}^{-1} \Matrix{Q}^{\intercal} \Matrix{S} \Vector{r}_0$
+    \State Evaluate the residual estimate $\Norm{ \left( \mathbf{I}_s - \Matrix{Q} \Matrix{Q}^{\intercal} \right) \Matrix{S} \Vector{r}_0 }_2$
+    \State Construct the approximate solution $\Vector{x} = \Vector{x}_0 + \Matrix{B} \Vector{y}$
+    \end{algorithmic}
+    \end{algorithm}
 
 \end{frame}
