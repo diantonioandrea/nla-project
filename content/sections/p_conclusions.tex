@@ -3,9 +3,18 @@
 \begin{frame}
     \frametitle{Considerations}
 
-    This work presents the development and analysis of the \textit{k-sGMRES} algorithm, an efficient variant of the \textit{GMRES} method for solving large, sparse linear systems. The algorithm is evaluated against \lstinline{MATLAB}'s \textit{GMRES}, demonstrating superior performance in terms of computational time while maintaining comparable accuracy in relative residuals, achieving similar results in nearly one-hundredth of the time. 
+    This work presents the development and analysis of the \textit{k-sGMRES} algorithm, an efficient variant of the \textit{GMRES} method for solving large linear systems. Key observations include:
 
-    Furthermore, as implemented, \textit{k-sGMRES} is capable of handling arbitrarily large matrices, where the only limitation is the available memory.
+    \begin{itemize}
+        \item The algorithm demonstrates superior performance compared to \lstinline{MATLAB}'s \textit{GMRES}:
+        \begin{itemize}
+            \item Comparable accuracy in terms of relative residuals.
+            \item Computational time reduced to nearly one-hundredth of \lstinline{MATLAB}'s runtime.
+        \end{itemize}
+        \item \textit{k-sGMRES} can handle arbitrarily large matrices, with the only constraint being the available memory or storage.
+    \end{itemize}
+
+    These characteristics make \textit{k-sGMRES} highly suitable for large-scale problems requiring efficiency and accuracy.
 \end{frame}
 
 \subsection{Possible Improvements}
@@ -13,8 +22,21 @@
 \begin{frame}
     \frametitle{Possible Improvements}
 
-    The algorithm and its implementation can be improved in several ways. For example, it could be extended to support larger matrices through direct storage access, thereby reducing memory overhead by shifting the constraint from available memory to storage. Alternatively, matrix handlers could be employed to enable streamed matrix constructions. These modifications pertain solely to how the matrix is accessed and do not alter the algorithm itself.
+    Future enhancements to the \textit{k-sGMRES} algorithm and its implementation include:
 
-    \vspace{1em}
-    Simple and general preconditioning techniques could also be applied to improve convergence for ill-conditioned matrices, such as the \textbf{stokes} matrix. More advanced techniques are problem-specific and lie outside the scope of this work.
+    \begin{enumerate}
+        \item \textbf{Support for Larger Matrices}
+        \begin{itemize}
+            \item Utilize direct storage access to reduce memory overhead, shifting the constraint from memory to storage capacity.
+            \item Employ matrix handlers to enable streamed matrix constructions, optimizing memory usage during computations.
+        \end{itemize}
+        \vspace{0.5em}
+
+        \item \textbf{Improved Convergence for Ill-Conditioned Matrices}
+        \begin{itemize}
+            \item Apply simple and general preconditioning techniques to enhance convergence, particularly for matrices like \textbf{stokes}.
+            \item Advanced, problem-specific preconditioning methods lie outside the scope of this work but represent a promising direction for future research.
+        \end{itemize}
+    \end{enumerate}
+
 \end{frame}
