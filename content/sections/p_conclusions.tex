@@ -22,21 +22,20 @@
 \begin{frame}
     \frametitle{Possible Improvements}
 
-    Future enhancements to the \textit{k-sGMRES} algorithm and its implementation include:
+    Future enhancements to the \textit{k-sGMRES} implementation include:
 
-    \begin{enumerate}
+    \begin{itemize}
         \item \textbf{Support for Larger Matrices}
         \begin{itemize}
             \item Utilize direct storage access to reduce memory overhead, shifting the constraint from memory to storage capacity.
             \item Employ matrix handlers to enable streamed matrix constructions, optimizing memory usage during computations.
         \end{itemize}
-        \vspace{0.5em}
 
         \item \textbf{Improved Convergence for Ill-Conditioned Matrices}
         \begin{itemize}
             \item Apply simple and general preconditioning techniques to enhance convergence, particularly for matrices like \textbf{stokes}.
             \item Advanced, problem-specific preconditioning methods lie outside the scope of this work but represent a promising direction for future research.
         \end{itemize}
-    \end{enumerate}
+    \end{itemize}
 
 \end{frame}
