@@ -1,47 +1,54 @@
 \subsection{Subspace Embedding}
 
-\begin{frame}
-    \frametitle{Subspace Embedding}
-
-    The subspace embedding of choice is the sparse reduction map. 
-    
-    Fix $s = 2 \left( d + 1 \right)$, which typically yields $\varepsilon \approx 1 / \sqrt{2}$.
-    
-    Each column has exactly $\lceil 2 \log \left( d + 1 \right) \rceil$ nonzero entries, placed at uniformly random coordinates. The values of these entries are chosen uniformly at random to be either $1 / \sqrt{s}$ or $-1 / \sqrt{s}$.
+\begin{frame}{Sparse Reduction Map}
+    \begin{itemize}
+        \item Parameter selection:
+        \begin{itemize}
+            \item Fix $s = 2 \left( d + 1 \right)$, typically leading to $\varepsilon \approx \frac{1}{\sqrt{2}}$.
+        \end{itemize}
+        \item Construction details:
+        \begin{itemize}
+            \item Each column has $\lceil 2 \log \left( d + 1 \right) \rceil$ nonzero entries.
+            \item Nonzero entries are placed at uniformly random coordinates.
+            \item Entry values are chosen uniformly at random as either $1 / \sqrt{s}$ or $-1 / \sqrt{s}$.
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
-% \begin{frame}[fragile]
-%     \frametitle{Implementation}
+\begin{frame}[fragile] % Subspace embedding.
+    \frametitle{Implementation}
 
-%     The following snippet illustrates the construction of the embedding as a CSC matrix. Some lines are omitted.
+\begin{lstlisting}[style=cpp]
+#pragma omp parallel for
+for(natural_t N4 = 0; N4 < N1 + 1; ++N4)
+    Nv0[N4] = N4 * N3;
 
-%     The triplet \lstinline{Nv0, Nv1, Rv0} characterizes the matrix.
+for(natural_t N4 = 0; N4 < N1; ++N4)
+    for(natural_t N5 = 0; N5 < N3; ++N5) {
+        Nv1[N4 * N3 + N5] = std::rand() % N2;
+        Rv0[N4 * N3 + N5] = (std::rand() % 2) ? R0 : R1;
+    }
+\end{lstlisting}
 
-% \begin{lstlisting}[style=cpp]
-% const natural_t N2 = 2 * (N0 + 1);
-% const natural_t N3 = 
-%     static_cast<natural_t>(std::ceil(2.0 * std::log(N0 + 1.0)));
-
-% const real_t R0 =
-%     1.0 / std::sqrt(static_cast<real_t>(N2)), R1 = -R0;
-
-% for(natural_t N4 = 0; N4 < N1; ++N4)
-%     for(natural_t N5 = 0; N5 < N3; ++N5) {
-%         Nv1[N4 * N3 + N5] = std::rand() % N2;
-%         Rv0[N4 * N3 + N5] = (std::rand() % 2) ? R0 : R1;
-%     }
-% \end{lstlisting}
-
-% \end{frame}
+\end{frame}
 
 \subsection{Basis Construction}
 
-\begin{frame}
-    \frametitle{Basis Construction}
-
-    A possible approach for constructing the basis for the \textit{sGMRES} algorithm is to build an orthonormal, or partially orthonormal, basis $\Matrix{B}$ for the Krylov subspace $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$.
-
-    The k-Truncated Arnoldi method reduces the cost of basis construction from $\mathcal{O}(n d^2)$ to $\mathcal{O}(n k^2)$ while still producing accurate solutions, provided that the reduced matrix $\Matrix{A} \Matrix{B}$ is reasonably well-conditioned. The parameter $k$ is typically chosen to be a small number, such as $2$ or $4$.
+\begin{frame}{Basis Construction}
+    \begin{itemize}
+        \item \textbf{Basis for the \textit{sGMRES} Algorithm}
+        \begin{itemize}
+            \item Build an orthonormal or partially orthonormal basis $\Matrix{B}$.
+            \item The basis spans the Krylov subspace $\mathcal{K}(\Matrix{A}; \Vector{r}_0)$.
+        \end{itemize}
+    
+        \item \textbf{k-Truncated Arnoldi Method}
+        \begin{itemize}
+            \item Reduces the computational cost of basis construction from $\mathcal{O}(n d^2)$ to $\mathcal{O}(n k^2)$.
+            \item Ensures accurate solutions if $\Matrix{A} \Matrix{B}$ is well-conditioned.
+            \item The parameter $k$ is typically small, such as $k = 2$ or $k = 4$.
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -71,86 +78,231 @@
 
 \end{frame}
 
-% \begin{frame}[fragile]
-%     \frametitle{Implementation}
-
-%     The following snippet illustrates the second part of \cref{alg:arnoldi}.
-
-% \begin{lstlisting}[style=cpp]
-% for(natural_t N4 = N2 + 1; N4 < N1; ++N4) {
-
-%     // Copy.
-%     Cp_RvtRvN_0(Rm1 + N4 * N0, Rm2 + (N4 - 1) * N0, N0);
-
-%     // (Re-)orthogonalization.
-%     for(natural_t N5 = 0; N5 < 2; ++N5)
-%         for(natural_t N6 = N4 - N2; N6 < N4; ++N6)
-%             Prj_RvtRvRvN_0(
-%                 Rm1 + N4 * N0, Rm1 + N6 * N0, Rm1 + N4 * N0, N0);
-
-%     // Normalization.
-%     Nrz_RvtN_0(Rm1 + N4 * N0, N0);
-
-%     // LS matrix.
-%     Mlc_RvtNNvNvRvRv_0(
-%         Rm2 + N4 * N0, N0, Nv0, Nv1, Rv0, Rm1 + N4 * N0);
-% }
-% \end{lstlisting}
-
-% \end{frame}
-
-\begin{frame}
-    \frametitle{Memory Considerations}
-
-    Since storage and memory are limited for large-scale problems (i.e., $n \gg \num{1e6}$), the Arnoldi process is implemented in a streaming fashion:
+\begin{frame}{Memory Considerations}
     \begin{itemize}
-        \item The basis $\Matrix{B}$ is constructed and discarded twice: once during the construction of $\Matrix{S} \Matrix{M}$ and again during the evaluation of $\Vector{x}$.
-        \item Only $k n$ values need to be stored at any given time, as opposed to $d n$.
+        \item Large-scale problems ($n \gg \num{1e6}$) impose strict storage and memory limitations.
+        \item To address this, the Arnoldi process is implemented in a \textbf{streaming fashion}:
+        \begin{itemize}
+            \item The basis $\Matrix{B}$ is constructed and discarded twice:
+            \begin{itemize}
+                \item Once during the construction of $\Matrix{S} \Matrix{M}$.
+                \item Once during the evaluation of $\Vector{x}$.
+            \end{itemize}
+            \item At any time, only $k n$ values are stored.
+        \end{itemize}
     \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile] % Arnoldi, first part.
+    \frametitle{implementation}
+
+\begin{lstlisting}[style=cpp]
+for(natural_t N4 = 1; N4 <= N2; ++N4) {
+
+    Mlc_RvtNNvNvRvRv_0(
+        Rm1 + N4 * N0, N0, Nv0, Nv1, Rv0, Rm1 + (N4 - 1) * N0);
+
+    Mlc_RvtNNvNvRvRv_0(
+        Rm3 + (N4 - 1) * N3, N0, Nv2, Nv3, Rv2, Rm1 + N4 * N0);
+
+    for(natural_t N5 = 0; N5 < 2; ++N5)
+        for(natural_t N6 = 0; N6 < N4; ++N6)
+            Prj_RvtRvRvN_0(
+                Rm1 + N4 * N0, Rm1 + N6 * N0, Rm1 + N4 * N0, N0);
+
+    Nrz_RvtN_0(Rm1 + N4 * N0, N0);
+}
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile] % Arnoldi, second part. 1/3.
+    \frametitle{implementation}
+
+\begin{lstlisting}[style=cpp]
+for(natural_t N4 = N2 + 1; N4 < N1; ++N4) {
+
+    const natural_t N5 = N4 % (N2 + 1);
+    const natural_t N6 = (N4 - 1) % (N2 + 1);
+
+    #pragma omp parallel for
+    for(natural_t N7 = 0; N7 < N0; ++N7)
+        Rm1[N5 * N0 + N7] = 0.0;
+
+    Mlc_RvtNNvNvRvRv_0(
+        Rm1 + N5 * N0, N0, Nv0, Nv1, Rv0, Rm1 + N6 * N0);
+
+    Mlc_RvtNNvNvRvRv_0(
+        Rm3 + (N4 - 1) * N3, N0, Nv2, Nv3, Rv2, Rm1 + N5 * N0);
+
+    [...]
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile] % Arnoldi, second part. 2/3.
+    \frametitle{implementation}
+
+\begin{lstlisting}[style=cpp]
+    [...]
+
+    for(natural_t N7 = 0; N7 < 2; ++N7)
+        for(natural_t N8 = 0; N8 <= N2; ++N8) {
+            if(N5 == N8)
+                continue;
+
+            Prj_RvtRvRvN_0(
+                Rm1 + N5 * N0, Rm1 + N8 * N0, Rm1 + N5 * N0, N0);
+        }
+
+    Nrz_RvtN_0(Rm1 + N5 * N0, N0);
+}
+
+[...]
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile] % Arnoldi, second part. 3/3.
+    \frametitle{implementation}
+
+\begin{lstlisting}[style=cpp]
+[...]
+
+#pragma omp parallel for
+for(natural_t N7 = 0; N7 < N0; ++N7)
+    Rm1[(N1 % (N2 + 1)) * N0 + N7] = 0.0;
+
+Mlc_RvtNNvNvRvRv_0(
+    Rm1 + (N1 % (N2 + 1)) * N0,
+        N0, Nv0, Nv1, Rv0, Rm1 + ((N1 - 1) % (N2 + 1)) * N0);
+
+Mlc_RvtNNvNvRvRv_0(
+    Rm3 + (N1 - 1) * N3,
+        N0, Nv2, Nv3, Rv2, Rm1 + (N1 % (N2 + 1)) * N0);
+\end{lstlisting}
+
 \end{frame}
 
 \subsection{Sketched Least-Squares Problem}
 
-\begin{frame}
-    \frametitle{Sketched Least-Squares Problem}
-
-    The sketched least-squares problem is solved using a QR factorization of the sketched matrix $\Matrix{S} \Matrix{A} \Matrix{B}$.
-
-    Let $\Matrix{Q} \in \RealMatrices{s}{d}$ be orthogonal and $\Matrix{R} \in \RealMatrices{d}{d}$ upper triangular such that:
-    \begin{align}
-        \Matrix{S} \Matrix{A} \Matrix{B} = \Matrix{Q} \Matrix{R},
-    \end{align}
-    then a solution of the sketched minimization problem is given by:
-    \begin{align}
-        \Vector{y} = \Matrix{R}^{-1} \Matrix{Q}^{\intercal} \Matrix{S} \Vector{r}_0.
-    \end{align}
+\begin{frame}{Sketched Least-Squares Problem}
+    \begin{itemize}
+        \item \textbf{Least-Squares Problem}
+        \begin{itemize}
+            \item Solve the sketched least-squares problem using a QR factorization of $\Matrix{S} \Matrix{A} \Matrix{B}$:
+            \begin{align}
+                \Matrix{S} \Matrix{A} \Matrix{B} = \Matrix{Q} \Matrix{R},
+            \end{align}
+            where:
+            \begin{itemize}
+                \item $\Matrix{Q} \in \RealMatrices{s}{d}$ is orthogonal.
+                \item $\Matrix{R} \in \RealMatrices{d}{d}$ is upper triangular.
+            \end{itemize}
+            \item The solution is:
+            \begin{align}
+                \Vector{y} = \Matrix{R}^{-1} \Matrix{Q}^{\intercal} \Matrix{S} \Vector{r}_0.
+            \end{align}
+            \item Computational cost: $\BigO{d^3}$, assuming $s = \BigO{d}$.
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Residual Estimate}
+\begin{frame}[fragile] % Sketched LS.
+    \frametitle{implementation}
 
-    The residual estimate for the sketched least-squares problem is given by:
-    \begin{align}
-        \Norm{\Vector{r}}_2 = \Norm{ \left( \mathbf{I}_s - \Matrix{Q} \Matrix{Q}^{\intercal} \right) \Matrix{S} \Vector{r}_0 }_2.
-    \end{align}
-    
-    These operations require $\BigO{d^3}$ arithmetic, assuming $s = \BigO{d}$.
+\begin{lstlisting}[style=cpp]
+Mqt_RvtRmNN_0(Rv5, Rm4, N3, N1, N1);
+
+for(natural_t N4 = N1; N4 > 0; --N4) {
+    real_t R2 = 0.0;
+
+    for(natural_t N5 = N4; N5 < N1; ++N5)
+        R2 += Rm3[N5 * N3 + N4 - 1] * Rv6[N5];
+
+    Rv6[N4 - 1] = (Rv5[N4 - 1] - R2) / Rm3[(N4 - 1) * (N3 + 1)];
+}
+
+for(natural_t N4 = 0; N4 < N1; ++N4)
+    Rv7[Nv4[N4]] = Rv6[N4];
+\end{lstlisting}
+
 \end{frame}
 
-\begin{frame}
-    \frametitle{Approximate Solution}
+\begin{frame}{Approximate Solution and Residual Estimate}
+    \begin{itemize}
+        \item \textbf{Approximate Solution}
+        \begin{itemize}
+            \item The solution is explicitly formed as:
+            \begin{align}
+                \Vector{x} = \Vector{x}_0 + \Matrix{B} \Vector{y}.
+            \end{align}
+            \item Computational cost: $\BigO{n d}$.
+        \end{itemize}
+        \vspace{0.5cm}
+        \item \textbf{Residual Estimate} 
+        \begin{itemize}
+            \item The residual norm is given by:
+            \begin{align}
+                \Norm{\Vector{r}}_2 = 
+                \Norm{ \left( \mathbf{I}_s - \Matrix{Q} \Matrix{Q}^{\intercal} \right) \Matrix{S} \Vector{r}_0 }_2.
+            \end{align}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
 
-    The approximate solution is explicitly formed as:
-    \begin{align}
-        \Vector{x} = \Vector{x}_0 + \Matrix{B} \Vector{y},
-    \end{align}
-    at a cost of $\BigO{n d}$ operations.
+\begin{frame}[fragile] % Solution. 1/2.
+    \frametitle{implementation}
+
+\begin{lstlisting}[style=cpp]
+Cp_RvtRvN_0(Rm1, Rv4, N0);
+Nrz_RvtN_0(Rm1, N0);
+
+#pragma omp parallel for
+for(natural_t N5 = 0; N5 < N0; ++N5)
+    Rvt0[N5] += Rm1[N5] * Rv7[0];
+
+for(natural_t N4 = 1; N4 <= N2; ++N4) {
+
+    #pragma omp parallel for
+    for(natural_t N5 = 0; N5 < N0; ++N5)
+        Rm1[N4 * N0 + N5] = 0.0;
+
+    Mlc_RvtNNvNvRvRv_0(
+        Rm1 + N4 * N0, N0, Nv0, Nv1, Rv0, Rm1 + (N4 - 1) * N0);
+
+    [...]
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile] % Solution. 2/2.
+    \frametitle{implementation}
+
+\begin{lstlisting}[style=cpp]
+    [...]
+
+    for(natural_t N5 = 0; N5 < 2; ++N5)
+        for(natural_t N6 = 0; N6 < N4; ++N6)
+            Prj_RvtRvRvN_0(
+                Rm1 + N4 * N0, Rm1 + N6 * N0, Rm1 + N4 * N0, N0);
+
+    Nrz_RvtN_0(Rm1 + N4 * N0, N0);
+
+    const real_t R3 = Rv7[N4];
+
+    #pragma omp parallel for
+    for(natural_t N5 = 0; N5 < N0; ++N5)
+        Rvt0[N5] += Rm1[N4 * N0 + N5] * R3;
+}
+\end{lstlisting}
+
 \end{frame}
 
 \subsection{Full Algorithm}
 
 \begin{frame}[fragile]
-    \frametitle{Algorithm: \textit{k-sGMRES}}
+    \frametitle{\textit{k-sGMRES}}
 
     The following algorithm summarizes the \textit{sGMRES} method.
 
@@ -171,6 +323,3 @@
     \end{algorithm}
 
 \end{frame}
-
-\subsection{Implementation}
-
