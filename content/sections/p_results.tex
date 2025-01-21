@@ -25,16 +25,16 @@
 \begin{frame}
     \frametitle{Right-Hand Side Vector and Testing Environment}
 
-    \textbf{Right-hand side vector:}
+    \textbf{Right-hand side vector}
     \begin{itemize}
         \item $\Vector{b} \in \RealVectors{n}$ is computed as $\Vector{b} = \Matrix{A} \Vector{g}$.
         \item $\Vector{g} \in \RealVectors{n}$ is a random vector sampled from the standard normal distribution.
     \end{itemize}
 
-    \textbf{Testing environment:}
+    \textbf{Testing environment}
     \begin{itemize}
-        \item Processor: AMD Ryzen 7 3700X CPU.
-        \item Memory: 64 GB of RAM.
+        \item Processor: AMD Ryzen 7 3700X.
+        \item Memory: 64 GB.
     \end{itemize}
 
 \end{frame}
@@ -44,7 +44,7 @@
 \begin{frame}
     \frametitle{\textbf{t2em} Matrix}
 
-    The \textit{k-sGMRES} algorithm demonstrates similar behavior to \lstinline{MATLAB}'s \textit{GMRES} in terms of relative residuals, while significantly outperforming it in computational time.
+    % The \textit{k-sGMRES} algorithm demonstrates similar behavior to \lstinline{MATLAB}'s \textit{GMRES} in terms of relative residuals, while significantly outperforming it in computational time.
 
     \begin{figure}[!ht]
         \begin{subfigure}[b]{0.45\textwidth}
@@ -89,7 +89,7 @@
 \begin{frame}[fragile]
     \frametitle{\textbf{stokes} Matrix}
 
-    The \textit{k-sGMRES} algorithm demonstrates its ability to handle larger matrices, such as the \textbf{stokes} matrix. Preconditioning techniques can further enhance convergence.
+    % The \textit{k-sGMRES} algorithm demonstrates its ability to handle larger matrices, such as the \textbf{stokes} matrix. Preconditioning techniques can further enhance convergence.
 
     \begin{figure}[!ht]
         \begin{subfigure}[b]{0.45\textwidth}
@@ -129,8 +129,24 @@
     
 \end{frame}
 
-\begin{frame}
-    \frametitle{Comparison with \lstinline{MATLAB}'s \textit{GMRES}}
+% \begin{frame}{Comparison with \lstinline{MATLAB}'s \textit{GMRES}}
+%     \begin{itemize}
+%         \item \textbf{Performance Overview}
+%         \begin{itemize}
+%             \item The \textit{k-sGMRES} algorithm achieves similar relative residuals as \lstinline{MATLAB}'s \textit{GMRES}.
+%             \item It significantly outperforms \lstinline{MATLAB}'s \textit{GMRES} in terms of computational time.
+%         \end{itemize}
 
-    For the \textbf{stokes} matrix, \lstinline{MATLAB}'s \textit{GMRES} fails to converge within a reasonable time frame, highlighting the efficiency of the \textit{k-sGMRES} algorithm for large-scale problems.
-\end{frame}
+%         \item \textbf{Handling Larger Matrices}
+%         \begin{itemize}
+%             \item The \textit{k-sGMRES} algorithm efficiently handles large matrices, such as the \textbf{stokes} matrix.
+%             \item Preconditioning techniques can further enhance its convergence.
+%         \end{itemize}
+        
+%         \item \textbf{Limitations of \lstinline{MATLAB}'s \textit{GMRES}}
+%         \begin{itemize}
+%             \item For the \textbf{stokes} matrix, \lstinline{MATLAB}'s \textit{GMRES} fails to converge within a reasonable time frame.
+%             \item This highlights the superior efficiency of the \textit{k-sGMRES} algorithm for large-scale problems.
+%         \end{itemize}
+%     \end{itemize}
+% \end{frame}
