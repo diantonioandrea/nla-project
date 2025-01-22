@@ -1,10 +1,24 @@
+\subsection{Goal and Notation}
+
+\begin{frame}
+    \frametitle{Goal and Notation}
+
+    Let $n \in \NaturalNumbers$,  $\Matrix{A} \in \RealMatrices{n}{n}$ and $\Vector{b} \in \RealVectors{n}$, the goal is to find $\Vector{x} \in \RealVectors{n}$ such that:
+    \begin{align}
+        \Matrix{A} \Vector{x} = \Vector{b}. \label{eq:system}
+    \end{align}
+
+    \textbf{This problem becomes increasingly challenging as $n$ grows.}
+
+\end{frame}
+
 \subsection{Definitions and Results}
 
 \begin{frame}
     \frametitle{Subspace embedding}
 
     \begin{definition}[Subspace embedding] \label{def:embedding}
-        Let $s, d, n \in \NaturalNumbers$ and consider $\Matrix{M} \in \RealMatrices{n}{d}$ such that \\ $\Range{\Matrix{M}} = L \subseteq \RealVectors{n}$. 
+        Let $s, d, n \in \NaturalNumbers$ and consider $\Matrix{M} \in \RealMatrices{n}{d}$ such that $\Range{\Matrix{M}} = L \subseteq \RealVectors{n}$. 
         
         A matrix $\Matrix{S} \in \RealMatrices{s}{n}$ is called a subspace embedding for $L$ with distortion $\varepsilon \in \left(0, 1\right)$ if:
         \begin{align}
@@ -29,20 +43,6 @@
             \Norm{\Matrix{M} \Vector{y}_{\star} - \Vector{v}}_2 \leq \Norm{\Matrix{M} \Vector{y}^{\star} - \Vector{v}}_2 \leq \frac{1 + \varepsilon}{1 - \varepsilon} \Norm{\Matrix{M} \Vector{y}_{\star} - \Vector{v}}_2. \label{eq:sketched_least_squares_2}
         \end{align}
     \end{Fact}
-\end{frame}
-
-\subsection{Goal and Notation}
-
-\begin{frame}
-    \frametitle{Goal and Notation}
-
-    Let $n \in \NaturalNumbers$,  $\Matrix{A} \in \RealMatrices{n}{n}$ and $\Vector{b} \in \RealVectors{n}$, the goal is to find $\Vector{x} \in \RealVectors{n}$ such that:
-    \begin{align}
-        \Matrix{A} \Vector{x} = \Vector{b}. \label{eq:system}
-    \end{align}
-
-    \textbf{This problem becomes increasingly challenging as $n$ grows.}
-
 \end{frame}
 
 \subsection{Recalling \textit{GMRES}}
