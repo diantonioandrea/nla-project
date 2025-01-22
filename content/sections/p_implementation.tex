@@ -229,7 +229,7 @@ for(natural_t N4 = 0; N4 < N1; ++N4)
 
 \end{frame}
 
-\begin{frame}{Approximate Solution and Residual Estimate}
+\begin{frame}{Approximate Solution}
     \begin{itemize}
         \item \textbf{Approximate Solution}
         \begin{itemize}
@@ -239,15 +239,14 @@ for(natural_t N4 = 0; N4 < N1; ++N4)
             \end{align}
             \item Computational cost: $\BigO{n d}$.
         \end{itemize}
-        \vspace{0.5cm}
-        \item \textbf{Residual Estimate} 
-        \begin{itemize}
-            \item The residual norm is given by:
-            \begin{align}
-                \Norm{\Vector{r}}_2 = 
-                \Norm{ \left( \mathbf{I}_s - \Matrix{Q} \Matrix{Q}^{\intercal} \right) \Matrix{S} \Vector{r}_0 }_2.
-            \end{align}
-        \end{itemize}
+        % \item \textbf{Residual Estimate} 
+        % \begin{itemize}
+        %     \item The residual norm is given by:
+        %     \begin{align}
+        %         \Norm{\Vector{r}}_2 = 
+        %         \Norm{ \left( \mathbf{I}_s - \Matrix{Q} \Matrix{Q}^{\intercal} \right) \Matrix{S} \Vector{r}_0 }_2.
+        %     \end{align}
+        % \end{itemize}
     \end{itemize}
 \end{frame}
 
